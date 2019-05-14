@@ -12,8 +12,10 @@ public class Personaje {
 	private int nivel;
 	private int experiencia;
 	private int puntoshabilidades;
+	private int daño;
 public Personaje(String nombre, Boolean genero, Objetos[][] mochila) {
 		super();
+		this.daño=200;
 		this.vida=100;
 		this.puntoshabilidades=7;
 		this.nombre = nombre;
@@ -92,6 +94,13 @@ public int getVida() {
 public void setVida(int vida) {
 	this.vida = vida;
 }
+public int getDaño() {
+	return daño;
+}
+public void setDaño(int daño) {
+	this.daño = daño;
+}
+
 
 	
 }

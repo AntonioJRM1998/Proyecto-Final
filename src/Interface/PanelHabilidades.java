@@ -2,6 +2,7 @@ package Interface;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.Font;
@@ -37,14 +38,17 @@ public class PanelHabilidades extends JPanel {
 		setLayout(null);
 		personaje=new Personaje("",true,objetos);
 		
-		JButton startpartida = new JButton("Comenzar Partida");
-		startpartida.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		startpartida.setFont(new Font("Gill Sans Ultra Bold", Font.BOLD, 30));
-		startpartida.setBounds(524, 663, 422, 44);
-		add(startpartida);
+		JLabel dañopuntos = new JLabel(Integer.toString(personaje.getDaño()));
+		dañopuntos.setForeground(Color.YELLOW);
+		dañopuntos.setFont(new Font("Dialog", Font.PLAIN, 30));
+		dañopuntos.setBounds(969, 117, 62, 37);
+		add(dañopuntos);
+		
+		JLabel lblDao = new JLabel("Da\u00F1o:");
+		lblDao.setForeground(Color.YELLOW);
+		lblDao.setFont(new Font("Dialog", Font.PLAIN, 30));
+		lblDao.setBounds(882, 117, 92, 37);
+		add(lblDao);
 		
 		JLabel puntosvidapint = new JLabel(Integer.toString(personaje.getVida()));
 		puntosvidapint.setForeground(Color.YELLOW);
@@ -100,9 +104,6 @@ public class PanelHabilidades extends JPanel {
 					punttospint.setText(Integer.toString(personaje.getPuntoshabilidades()));
 					personaje.setVida(personaje.getResistencia()*20);
 					puntosvidapint.setText(Integer.toString(personaje.getVida()));
-					
-					
-					
 					}
 			}
 		});
@@ -233,7 +234,8 @@ public class PanelHabilidades extends JPanel {
 				contadorfuerza.setText(Integer.toString(personaje.getFuerza()));
 				personaje.setPuntoshabilidades(personaje.getPuntoshabilidades()-1);
 				punttospint.setText(Integer.toString(personaje.getPuntoshabilidades()));
-				
+				personaje.setDaño(personaje.getFuerza()*40);
+				dañopuntos.setText(Integer.toString(personaje.getDaño()));
 				}
 			}
 		});
@@ -263,7 +265,8 @@ public class PanelHabilidades extends JPanel {
 					contadorfuerza.setText(Integer.toString(personaje.getFuerza()));
 					personaje.setPuntoshabilidades(personaje.getPuntoshabilidades()+1);
 					punttospint.setText(Integer.toString(personaje.getPuntoshabilidades()));
-					
+					personaje.setDaño(personaje.getFuerza()*40);
+					dañopuntos.setText(Integer.toString(personaje.getDaño()));
 					}
 				
 			}
@@ -288,13 +291,19 @@ public class PanelHabilidades extends JPanel {
 		rdbtnMasculino.setBackground(new Color(0, 153, 0));
 		add(rdbtnMasculino);
 		
+		ButtonGroup boton=new ButtonGroup();
+		boton.add(rdbtnFemenino);
+		boton.add(rdbtnMasculino);
+		
 		JLabel lblGenero = new JLabel("Genero:");
 		lblGenero.setBounds(547, 244, 119, 26);
 		lblGenero.setForeground(Color.YELLOW);
-		lblGenero.setFont(new Font("Sitka Small", Font.PLAIN, 24));
+		lblGenero.setFont(new Font("Dialog", Font.PLAIN, 30));
 		add(lblGenero);
 		
 		camponombre = new JTextField();
+		camponombre.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		camponombre.setForeground(Color.BLACK);
 		camponombre.setBounds(672, 191, 186, 32);
 		camponombre.setBackground(new Color(0, 102, 0));
 		add(camponombre);
@@ -302,9 +311,21 @@ public class PanelHabilidades extends JPanel {
 		
 		JLabel nombre = new JLabel("Nombre:");
 		nombre.setBounds(547, 197, 119, 26);
-		nombre.setFont(new Font("Sitka Small", Font.PLAIN, 24));
+		nombre.setFont(new Font("Dialog", Font.PLAIN, 30));
 		nombre.setForeground(new Color(255, 255, 0));
 		add(nombre);
+		
+		JButton startpartida = new JButton("Comenzar Partida");
+		startpartida.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				personaje.setNombre(camponombre.getText());
+				ventana.cargaPantallaMapa();
+			}
+		});
+		startpartida.setFont(new Font("Gill Sans Ultra Bold", Font.BOLD, 30));
+		startpartida.setBounds(524, 663, 422, 44);
+		add(startpartida);
 		
 		JLabel personaje = new JLabel("");
 		personaje.setBounds(38, 51, 488, 814);
