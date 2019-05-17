@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JTextField;
 
+import Clases.Habilidades;
 import Clases.Objetos;
 import Clases.Personaje;
 
@@ -28,15 +29,17 @@ import java.awt.event.ActionEvent;
 
 public class PanelHabilidades extends JPanel {
 	private Ventana ventana;
+	private Habilidades habilidad;
 	private JTextField camponombre;
 	private Personaje personaje;
-	private Objetos[][]objetos;
+	private Objetos[][]mochila;
 	public PanelHabilidades(Ventana v) {
 		super();
 		this.ventana=v;
 		setSize(1600,900);
 		setLayout(null);
-		personaje=new Personaje("",true,objetos);
+		personaje=new Personaje("",true,mochila);
+		habilidad=new Habilidades();
 		
 		JLabel descripcion = new JLabel("");
 		descripcion.setBounds(1184, 335, 395, 544);
@@ -318,11 +321,23 @@ public class PanelHabilidades extends JPanel {
 		add(lblAtributos);
 		
 		JRadioButton rdbtnFemenino = new JRadioButton("Femenino");
+		rdbtnFemenino.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				personaje.setGenero(false);
+			}
+		});
 		rdbtnFemenino.setBounds(869, 239, 201, 35);
 		rdbtnFemenino.setBackground(new Color(0, 153, 0));
 		add(rdbtnFemenino);
 		
 		JRadioButton rdbtnMasculino = new JRadioButton("Masculino");
+		rdbtnMasculino.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				personaje.setGenero(true);
+			}
+		});
 		rdbtnMasculino.setBounds(672, 239, 186, 35);
 		rdbtnMasculino.setBackground(new Color(0, 153, 0));
 		add(rdbtnMasculino);
@@ -356,6 +371,8 @@ public class PanelHabilidades extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				personaje.setNombre(camponombre.getText());
+				asignarHabilidades(habilidad,personaje);
+				imprimeDatos(personaje,habilidad);
 				ventana.cargaPantallaMapa();
 			}
 		});
@@ -376,5 +393,31 @@ public class PanelHabilidades extends JPanel {
 		JLabel genero = new JLabel("");
 		genero.setBounds(547, 244, 92, 26);
 		add(genero);
+	}
+	public void imprimeDatos(Personaje persona,Habilidades habilidades) {
+		System.out.println("Nombre:"+persona.getNombre()
+				+ "\nGenero:"+(persona.getGenero()?"Masculino":"Femenino")
+				+ "\nFuerza:"+persona.getFuerza()
+				+ "\nVida:"+personaje.getVida()
+				+ "\nInteligencia:"+persona.getInteligencia()
+				+ "\nCarisma:"+persona.getCarisma()
+				+ "\nResistencia:"+persona.getResistencia()
+				+ "\nNivel:"+persona.getNivel()
+				+ "\nExperiencia:"+persona.getExperiencia()
+				+ "\nDaño:"+persona.getDaño()
+				+ "\nPuntos de Habilidad:"+habilidades.getPuntosHabilidades()
+				+ "\nArmas:"+habilidades.getArmas()
+				+ "\nConversacion:"+habilidades.getConversacion()
+				+ "\nCiencia:"+habilidades.getCiencia()
+				+ "\nMedicina:"+habilidades.getMedicina()
+				+ "\nReparacion:"+habilidades.getReparacion());
+		
+	}
+	public void asignarHabilidades(Habilidades habilidades,Personaje personaje) {
+		habilidades.setArmas(personaje.getFuerza()*2);
+		habilidades.setCiencia(personaje.getInteligencia()*2);
+		habilidades.setConversacion(personaje.getCarisma()*3);
+		habilidades.setMedicina(personaje.getInteligencia()*2);
+		habilidades.setReparacion(personaje.getInteligencia()*2);
 	}
 }
