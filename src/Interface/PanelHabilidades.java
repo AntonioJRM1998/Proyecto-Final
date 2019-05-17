@@ -38,6 +38,10 @@ public class PanelHabilidades extends JPanel {
 		setLayout(null);
 		personaje=new Personaje("",true,objetos);
 		
+		JLabel descripcion = new JLabel("");
+		descripcion.setBounds(1184, 335, 395, 544);
+		add(descripcion);
+		
 		JLabel dañopuntos = new JLabel(Integer.toString(personaje.getDaño()));
 		dañopuntos.setForeground(Color.YELLOW);
 		dañopuntos.setFont(new Font("Dialog", Font.PLAIN, 30));
@@ -81,9 +85,19 @@ public class PanelHabilidades extends JPanel {
 		add(carismapunto);
 		
 		JLabel carisma = new JLabel("Carisma:");
+		carisma.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				descripcion.setIcon(new ImageIcon(PanelHabilidades.class.getResource("/Imagenes/Carisma1.jpg")));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				descripcion.setIcon(new ImageIcon(PanelHabilidades.class.getResource("")));
+			}
+		});
 		carisma.setForeground(Color.YELLOW);
 		carisma.setFont(new Font("Dialog", Font.PLAIN, 30));
-		carisma.setBounds(604, 578, 234, 44);
+		carisma.setBounds(604, 578, 245, 44);
 		add(carisma);
 		
 		
@@ -112,9 +126,20 @@ public class PanelHabilidades extends JPanel {
 		add(mas2);
 				
 		JLabel resistencia = new JLabel("Resistencia:");
+		resistencia.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				descripcion.setIcon(new ImageIcon(PanelHabilidades.class.getResource("/Imagenes/Resistencia1.jpg")));
+				
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				descripcion.setIcon(new ImageIcon(PanelHabilidades.class.getResource("")));
+			}
+		});
 		resistencia.setForeground(Color.YELLOW);
 		resistencia.setFont(new Font("Dialog", Font.PLAIN, 30));
-		resistencia.setBounds(604, 511, 234, 44);
+		resistencia.setBounds(604, 511, 245, 44);
 		add(resistencia);
 		
 		JButton menos2 = new JButton("-");
@@ -193,9 +218,19 @@ public class PanelHabilidades extends JPanel {
 		
 		
 		JLabel Inteligencia = new JLabel("Inteligencia:");
+		Inteligencia.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				descripcion.setIcon(new ImageIcon(PanelHabilidades.class.getResource("/Imagenes/Inteligencia1.jpg")));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				descripcion.setIcon(new ImageIcon(PanelHabilidades.class.getResource("")));
+			}
+		});
 		Inteligencia.setForeground(Color.YELLOW);
 		Inteligencia.setFont(new Font("Sitka Small", Font.PLAIN, 30));
-		Inteligencia.setBounds(604, 441, 234, 44);
+		Inteligencia.setBounds(604, 441, 245, 44);
 		add(Inteligencia);
 		
 		JButton menos_1 = new JButton("-");
@@ -215,9 +250,6 @@ public class PanelHabilidades extends JPanel {
 		menos_1.setBounds(547, 435, 50, 50);
 		add(menos_1);
 		
-		JLabel descripcion = new JLabel("");
-		descripcion.setBounds(970, 376, 550, 414);
-		add(descripcion);
 		
 		JLabel contadorfuerza = new JLabel(Integer.toString(personaje.getFuerza()));
 		contadorfuerza.setForeground(Color.YELLOW);
@@ -248,12 +280,16 @@ public class PanelHabilidades extends JPanel {
 		fuerza.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-
+				descripcion.setIcon(new ImageIcon(PanelHabilidades.class.getResource("/Imagenes/Fuerza1.jpg")));
+			}
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				descripcion.setIcon(new ImageIcon(PanelHabilidades.class.getResource("")));
 			}
 		});
 		fuerza.setForeground(Color.YELLOW);
 		fuerza.setFont(new Font("Sitka Small", Font.PLAIN, 30));
-		fuerza.setBounds(604, 367, 185, 44);
+		fuerza.setBounds(604, 367, 245, 44);
 		add(fuerza);
 		
 		JButton menos = new JButton("-");
