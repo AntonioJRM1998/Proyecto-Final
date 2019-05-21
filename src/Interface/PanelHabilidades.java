@@ -381,7 +381,7 @@ public class PanelHabilidades extends JPanel {
 		add(startpartida);
 		
 		JLabel personaje = new JLabel("");
-		personaje.setBounds(38, 51, 488, 814);
+		personaje.setBounds(38, 28, 487, 830);
 		personaje.setIcon(new ImageIcon(PanelHabilidades.class.getResource("/Imagenes/Personaje.png")));
 		add(personaje);
 		
