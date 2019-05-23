@@ -1,9 +1,12 @@
 package Clases;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
  
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -12,44 +15,41 @@ import javax.swing.JPanel;
  
 public class JPanelConFondo extends JPanel {
  
-    private Image imagen;
+    private JLabel imagen;
+    
  
     public JPanelConFondo() {
+    	this.setBackground(Color.green);
     }
  
     public JPanelConFondo(String nombreImagen) {
+        imagen = new JLabel();
         if (nombreImagen != null) {
-            imagen = new ImageIcon(
-                           getClass().getResource(nombreImagen)
-                           ).getImage();
+            imagen.setIcon(new ImageIcon(nombreImagen));
         }
+       this.add(imagen);
+       this.setVisible(true);
     }
  
-    public JPanelConFondo(Image imagenInicial) {
-        if (imagenInicial != null) {
-            imagen = imagenInicial;
-        }
-    }
  
     public void setImagen(String nombreImagen) {
-        if (nombreImagen != null) {
-            imagen = new ImageIcon(
-                   getClass().getResource(nombreImagen)
-                   ).getImage();
+        /*if (nombreImagen != null) {
+            imagen.setIcon(new ImageIcon(nombreImagen));
+            this.add(imagen);
         } else {
             imagen = null;
         }
  
-        repaint();
+        repaint();*/
     }
  
-    public void setImagen(Image nuevaImagen) {
+    /*public void setImagen(Image nuevaImagen) {
         imagen = nuevaImagen;
  
         repaint();
-    }
+    }*/
  
-    @Override
+    /* @Override
     public void paint(Graphics g) {
         if (imagen != null) {
             g.drawImage(imagen, 0, 0, getWidth(), getHeight(),
@@ -61,5 +61,5 @@ public class JPanelConFondo extends JPanel {
         }
  
         super.paint(g);
-    }
+    }*/
 }

@@ -31,21 +31,18 @@ public class PanelHabilidades extends JPanel {
 	private Ventana ventana;
 	private Habilidades habilidad;
 	private JTextField camponombre;
-	private Personaje personaje;
-	private Objetos[][]mochila;
 	public PanelHabilidades(Ventana v) {
 		super();
 		this.ventana=v;
 		setSize(1600,900);
 		setLayout(null);
-		personaje=new Personaje("",true,mochila);
 		habilidad=new Habilidades();
 		
 		JLabel descripcion = new JLabel("");
 		descripcion.setBounds(1184, 335, 395, 544);
 		add(descripcion);
 		
-		JLabel dañopuntos = new JLabel(Integer.toString(personaje.getDaño()));
+		JLabel dañopuntos = new JLabel(Integer.toString(ventana.getPersonaje().getDaño()));
 		dañopuntos.setForeground(Color.YELLOW);
 		dañopuntos.setFont(new Font("Dialog", Font.PLAIN, 30));
 		dañopuntos.setBounds(969, 117, 62, 37);
@@ -57,7 +54,7 @@ public class PanelHabilidades extends JPanel {
 		lblDao.setBounds(882, 117, 92, 37);
 		add(lblDao);
 		
-		JLabel puntosvidapint = new JLabel(Integer.toString(personaje.getVida()));
+		JLabel puntosvidapint = new JLabel(Integer.toString(ventana.getPersonaje().getVida()));
 		puntosvidapint.setForeground(Color.YELLOW);
 		puntosvidapint.setFont(new Font("Dialog", Font.PLAIN, 30));
 		puntosvidapint.setBounds(776, 117, 62, 37);
@@ -69,7 +66,7 @@ public class PanelHabilidades extends JPanel {
 		puntosvida.setBounds(547, 117, 219, 37);
 		add(puntosvida);
 		
-		JLabel punttospint = new JLabel(Integer.toString(personaje.getPuntoshabilidades()));
+		JLabel punttospint = new JLabel(Integer.toString(ventana.getPersonaje().getPuntoshabilidades()));
 		punttospint.setForeground(Color.YELLOW);
 		punttospint.setFont(new Font("Dialog", Font.PLAIN, 30));
 		punttospint.setBounds(837, 313, 43, 37);
@@ -81,7 +78,7 @@ public class PanelHabilidades extends JPanel {
 		puntossubir.setBounds(721, 309, 101, 44);
 		add(puntossubir);
 		
-		JLabel carismapunto = new JLabel(Integer.toString(personaje.getCarisma()));
+		JLabel carismapunto = new JLabel(Integer.toString(ventana.getPersonaje().getCarisma()));
 		carismapunto.setForeground(Color.YELLOW);
 		carismapunto.setFont(new Font("Dialog", Font.PLAIN, 30));
 		carismapunto.setBounds(806, 585, 43, 37);
@@ -104,7 +101,7 @@ public class PanelHabilidades extends JPanel {
 		add(carisma);
 		
 		
-		JLabel resistenciapuntos = new JLabel(Integer.toString(personaje.getResistencia()));
+		JLabel resistenciapuntos = new JLabel(Integer.toString(ventana.getPersonaje().getResistencia()));
 		resistenciapuntos.setForeground(Color.YELLOW);
 		resistenciapuntos.setFont(new Font("Dialog", Font.PLAIN, 30));
 		resistenciapuntos.setBounds(806, 518, 43, 37);
@@ -114,13 +111,13 @@ public class PanelHabilidades extends JPanel {
 		mas2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(personaje.getPuntoshabilidades()>0&&personaje.getResistencia()<10) {
-					personaje.setResistencia(personaje.getResistencia()+1);
-					resistenciapuntos.setText(Integer.toString(personaje.getResistencia()));
-					personaje.setPuntoshabilidades(personaje.getPuntoshabilidades()-1);
-					punttospint.setText(Integer.toString(personaje.getPuntoshabilidades()));
-					personaje.setVida(personaje.getResistencia()*20);
-					puntosvidapint.setText(Integer.toString(personaje.getVida()));
+				if(ventana.getPersonaje().getPuntoshabilidades()>0&&ventana.getPersonaje().getResistencia()<10) {
+					ventana.getPersonaje().setResistencia(ventana.getPersonaje().getResistencia()+1);
+					resistenciapuntos.setText(Integer.toString(ventana.getPersonaje().getResistencia()));
+					ventana.getPersonaje().setPuntoshabilidades(ventana.getPersonaje().getPuntoshabilidades()-1);
+					punttospint.setText(Integer.toString(ventana.getPersonaje().getPuntoshabilidades()));
+					ventana.getPersonaje().setVida(ventana.getPersonaje().getResistencia()*20);
+					puntosvidapint.setText(Integer.toString(ventana.getPersonaje().getVida()));
 					}
 			}
 		});
@@ -149,13 +146,13 @@ public class PanelHabilidades extends JPanel {
 		menos2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(personaje.getResistencia()>1) {
-					personaje.setResistencia(personaje.getResistencia()-1);
-					resistenciapuntos.setText(Integer.toString(personaje.getResistencia()));
-					personaje.setPuntoshabilidades(personaje.getPuntoshabilidades()+1);
-					punttospint.setText(Integer.toString(personaje.getPuntoshabilidades()));
-					personaje.setVida(personaje.getResistencia()*20);
-					puntosvidapint.setText(Integer.toString(personaje.getVida()));
+				if(ventana.getPersonaje().getResistencia()>1) {
+					ventana.getPersonaje().setResistencia(ventana.getPersonaje().getResistencia()-1);
+					resistenciapuntos.setText(Integer.toString(ventana.getPersonaje().getResistencia()));
+					ventana.getPersonaje().setPuntoshabilidades(ventana.getPersonaje().getPuntoshabilidades()+1);
+					punttospint.setText(Integer.toString(ventana.getPersonaje().getPuntoshabilidades()));
+					ventana.getPersonaje().setVida(ventana.getPersonaje().getResistencia()*20);
+					puntosvidapint.setText(Integer.toString(ventana.getPersonaje().getVida()));
 					
 					}
 			}
@@ -164,7 +161,7 @@ public class PanelHabilidades extends JPanel {
 		menos2.setBounds(547, 505, 50, 50);
 		add(menos2);
 		
-		JLabel contadorint = new JLabel(Integer.toString(personaje.getInteligencia()));
+		JLabel contadorint = new JLabel(Integer.toString(ventana.getPersonaje().getInteligencia()));
 		contadorint.setForeground(Color.YELLOW);
 		contadorint.setFont(new Font("Sitka Small", Font.PLAIN, 30));
 		contadorint.setBounds(806, 447, 43, 37);
@@ -174,11 +171,11 @@ public class PanelHabilidades extends JPanel {
 		mas3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(personaje.getPuntoshabilidades()>0&&personaje.getCarisma()<10) {
-					personaje.setCarisma(personaje.getCarisma()+1);
-					carismapunto.setText(Integer.toString(personaje.getCarisma()));
-					personaje.setPuntoshabilidades(personaje.getPuntoshabilidades()-1);
-					punttospint.setText(Integer.toString(personaje.getPuntoshabilidades()));
+				if(ventana.getPersonaje().getPuntoshabilidades()>0&&ventana.getPersonaje().getCarisma()<10) {
+					ventana.getPersonaje().setCarisma(ventana.getPersonaje().getCarisma()+1);
+					carismapunto.setText(Integer.toString(ventana.getPersonaje().getCarisma()));
+					ventana.getPersonaje().setPuntoshabilidades(ventana.getPersonaje().getPuntoshabilidades()-1);
+					punttospint.setText(Integer.toString(ventana.getPersonaje().getPuntoshabilidades()));
 					}	
 			}
 		});
@@ -190,11 +187,11 @@ public class PanelHabilidades extends JPanel {
 		menos3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(personaje.getCarisma()>1) {
-					personaje.setCarisma(personaje.getCarisma()-1);
-					carismapunto.setText(Integer.toString(personaje.getCarisma()));
-					personaje.setPuntoshabilidades(personaje.getPuntoshabilidades()+1);
-					punttospint.setText(Integer.toString(personaje.getPuntoshabilidades()));
+				if(ventana.getPersonaje().getCarisma()>1) {
+					ventana.getPersonaje().setCarisma(ventana.getPersonaje().getCarisma()-1);
+					carismapunto.setText(Integer.toString(ventana.getPersonaje().getCarisma()));
+					ventana.getPersonaje().setPuntoshabilidades(ventana.getPersonaje().getPuntoshabilidades()+1);
+					punttospint.setText(Integer.toString(ventana.getPersonaje().getPuntoshabilidades()));
 					}	
 			}
 			});
@@ -206,12 +203,12 @@ public class PanelHabilidades extends JPanel {
 		mas_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(personaje.getPuntoshabilidades()>0&&personaje.getInteligencia()<10) {
-					personaje.setInteligencia(personaje.getInteligencia()+1);
-					contadorint.setText(Integer.toString(personaje.getInteligencia()));
-					personaje.setPuntoshabilidades(personaje.getPuntoshabilidades()-1);
-					punttospint.setText(Integer.toString(personaje.getPuntoshabilidades()));
-					
+				if(ventana.getPersonaje().getPuntoshabilidades()>0&&ventana.getPersonaje().getInteligencia()<10) {
+					ventana.getPersonaje().setInteligencia(ventana.getPersonaje().getInteligencia()+1);
+					contadorint.setText(Integer.toString(ventana.getPersonaje().getInteligencia()));
+					ventana.getPersonaje().setPuntoshabilidades(ventana.getPersonaje().getPuntoshabilidades()-1);
+					punttospint.setText(Integer.toString(ventana.getPersonaje().getPuntoshabilidades()));
+				
 					}
 			}
 		});
@@ -240,11 +237,11 @@ public class PanelHabilidades extends JPanel {
 		menos_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(personaje.getInteligencia()>1) {
-					personaje.setInteligencia(personaje.getInteligencia()-1);
-					contadorint.setText(Integer.toString(personaje.getInteligencia()));
-					personaje.setPuntoshabilidades(personaje.getPuntoshabilidades()+1);
-					punttospint.setText(Integer.toString(personaje.getPuntoshabilidades()));
+				if(ventana.getPersonaje().getInteligencia()>1) {
+					ventana.getPersonaje().setInteligencia(ventana.getPersonaje().getInteligencia()-1);
+					contadorint.setText(Integer.toString(ventana.getPersonaje().getInteligencia()));
+					ventana.getPersonaje().setPuntoshabilidades(ventana.getPersonaje().getPuntoshabilidades()+1);
+					punttospint.setText(Integer.toString(ventana.getPersonaje().getPuntoshabilidades()));
 					
 					}
 			}
@@ -254,7 +251,7 @@ public class PanelHabilidades extends JPanel {
 		add(menos_1);
 		
 		
-		JLabel contadorfuerza = new JLabel(Integer.toString(personaje.getFuerza()));
+		JLabel contadorfuerza = new JLabel(Integer.toString(ventana.getPersonaje().getFuerza()));
 		contadorfuerza.setForeground(Color.YELLOW);
 		contadorfuerza.setFont(new Font("Sitka Small", Font.PLAIN, 30));
 		contadorfuerza.setBounds(806, 376, 43, 37);
@@ -264,13 +261,13 @@ public class PanelHabilidades extends JPanel {
 		button.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				if(personaje.getPuntoshabilidades()>0&&personaje.getFuerza()<10) {
-				personaje.setFuerza(personaje.getFuerza()+1);
-				contadorfuerza.setText(Integer.toString(personaje.getFuerza()));
-				personaje.setPuntoshabilidades(personaje.getPuntoshabilidades()-1);
-				punttospint.setText(Integer.toString(personaje.getPuntoshabilidades()));
-				personaje.setDaño(personaje.getFuerza()*40);
-				dañopuntos.setText(Integer.toString(personaje.getDaño()));
+				if(ventana.getPersonaje().getPuntoshabilidades()>0&&ventana.getPersonaje().getFuerza()<10) {
+				ventana.getPersonaje().setFuerza(ventana.getPersonaje().getFuerza()+1);
+				contadorfuerza.setText(Integer.toString(ventana.getPersonaje().getFuerza()));
+				ventana.getPersonaje().setPuntoshabilidades(ventana.getPersonaje().getPuntoshabilidades()-1);
+				punttospint.setText(Integer.toString(ventana.getPersonaje().getPuntoshabilidades()));
+				ventana.getPersonaje().setDaño(ventana.getPersonaje().getFuerza()*40);
+				dañopuntos.setText(Integer.toString(ventana.getPersonaje().getDaño()));
 				}
 			}
 		});
@@ -299,13 +296,13 @@ public class PanelHabilidades extends JPanel {
 		menos.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(personaje.getFuerza()>1) {
-					personaje.setFuerza(personaje.getFuerza()-1);
-					contadorfuerza.setText(Integer.toString(personaje.getFuerza()));
-					personaje.setPuntoshabilidades(personaje.getPuntoshabilidades()+1);
-					punttospint.setText(Integer.toString(personaje.getPuntoshabilidades()));
-					personaje.setDaño(personaje.getFuerza()*40);
-					dañopuntos.setText(Integer.toString(personaje.getDaño()));
+				if(ventana.getPersonaje().getFuerza()>1) {
+					ventana.getPersonaje().setFuerza(ventana.getPersonaje().getFuerza()-1);
+					contadorfuerza.setText(Integer.toString(ventana.getPersonaje().getFuerza()));
+					ventana.getPersonaje().setPuntoshabilidades(ventana.getPersonaje().getPuntoshabilidades()+1);
+					punttospint.setText(Integer.toString(ventana.getPersonaje().getPuntoshabilidades()));
+					ventana.getPersonaje().setDaño(ventana.getPersonaje().getFuerza()*40);
+					dañopuntos.setText(Integer.toString(ventana.getPersonaje().getDaño()));
 					}
 				
 			}
@@ -324,7 +321,7 @@ public class PanelHabilidades extends JPanel {
 		rdbtnFemenino.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				personaje.setGenero(false);
+				ventana.getPersonaje().setGenero(false);
 			}
 		});
 		rdbtnFemenino.setBounds(869, 239, 201, 35);
@@ -335,7 +332,7 @@ public class PanelHabilidades extends JPanel {
 		rdbtnMasculino.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				personaje.setGenero(true);
+				ventana.getPersonaje().setGenero(true);
 			}
 		});
 		rdbtnMasculino.setBounds(672, 239, 186, 35);
@@ -370,21 +367,24 @@ public class PanelHabilidades extends JPanel {
 		startpartida.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				personaje.setNombre(camponombre.getText());
-				asignarHabilidades(habilidad,personaje);
-				imprimeDatos(personaje,habilidad);
+				if(ventana.getPersonaje().getPuntoshabilidades()==0&&camponombre.getText().length()>0&&ventana.getPersonaje().getGenero()!=null) {
+				ventana.getPersonaje().setNombre(camponombre.getText());
+				asignarHabilidades(habilidad,ventana.getPersonaje());
+				imprimeDatos(ventana.getPersonaje(),habilidad);
 				ventana.cargaPantallaMapa();
+				}else {
+					ventana.cargaPantallaMapa();
+				}
 			}
 		});
 		startpartida.setFont(new Font("Gill Sans Ultra Bold", Font.BOLD, 30));
 		startpartida.setBounds(524, 663, 422, 44);
 		add(startpartida);
 		
-		JLabel personaje = new JLabel("");
-		personaje.setBounds(38, 28, 487, 830);
-		personaje.setIcon(new ImageIcon(PanelHabilidades.class.getResource("/Imagenes/Personaje.png")));
-		add(personaje);
-		
+		JLabel labelPersonaje = new JLabel("");
+		labelPersonaje.setBounds(38, 28, 487, 830);
+		labelPersonaje.setIcon(new ImageIcon(PanelHabilidades.class.getResource("/Imagenes/personaje.png")));
+		add(labelPersonaje);
 		JLabel fondo = new JLabel("");
 		fondo.setBounds(0, 0, 1600, 900);
 		fondo.setIcon(new ImageIcon(PanelHabilidades.class.getResource("/Imagenes/FondoAtributos.jpg")));
@@ -398,7 +398,7 @@ public class PanelHabilidades extends JPanel {
 		System.out.println("Nombre:"+persona.getNombre()
 				+ "\nGenero:"+(persona.getGenero()?"Masculino":"Femenino")
 				+ "\nFuerza:"+persona.getFuerza()
-				+ "\nVida:"+personaje.getVida()
+				+ "\nVida:"+ventana.getPersonaje().getVida()
 				+ "\nInteligencia:"+persona.getInteligencia()
 				+ "\nCarisma:"+persona.getCarisma()
 				+ "\nResistencia:"+persona.getResistencia()
@@ -414,10 +414,10 @@ public class PanelHabilidades extends JPanel {
 		
 	}
 	public void asignarHabilidades(Habilidades habilidades,Personaje personaje) {
-		habilidades.setArmas(personaje.getFuerza()*2);
-		habilidades.setCiencia(personaje.getInteligencia()*2);
-		habilidades.setConversacion(personaje.getCarisma()*3);
-		habilidades.setMedicina(personaje.getInteligencia()*2);
-		habilidades.setReparacion(personaje.getInteligencia()*2);
+		habilidades.setArmas(ventana.getPersonaje().getFuerza()*2);
+		habilidades.setCiencia(ventana.getPersonaje().getInteligencia()*2);
+		habilidades.setConversacion(ventana.getPersonaje().getCarisma()*3);
+		habilidades.setMedicina(ventana.getPersonaje().getInteligencia()*2);
+		habilidades.setReparacion(ventana.getPersonaje().getInteligencia()*2);
 	}
 }
