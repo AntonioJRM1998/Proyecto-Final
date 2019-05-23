@@ -1,142 +1,67 @@
 package Interface;
 
-import javax.swing.JPanel;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-
-import Clases.BotonesMapa;
-import Clases.JPanelConFondo;
-
-import com.jgoodies.forms.layout.FormSpecs;
-import javax.swing.JButton;
-import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
-import javax.swing.BorderFactory;
+import javax.swing.JPanel;
 import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
-import javax.swing.border.Border;
-
-import java.awt.Button;
-import java.awt.CardLayout;
+import javax.swing.JButton;
+import javax.swing.JProgressBar;
 import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.Random;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class PanelMapa extends JPanel {
 	private Ventana ventana;
-	JPanelConFondo [][] botones;
-	private int ancho;
-	private int largo;
 	public PanelMapa(Ventana v) {
-		//super("./src/Imagenes/mapa.jpg");
-		this.setLayout(new GridLayout(24,35));
-		setSize(1600,900);
-		botones=new JPanelConFondo[24][35];
-	//	setLayout(new GridLayout(24, 35, 0, 0));
-		for (int i = 0; i < botones.length; i++) {
-			for (int j = 0; j < botones[i].length; j++) {
-				botones[i][j]=new JPanelConFondo();
-				//botones[i][j].setOpaque(false);
-				botones[i][j].setLayout(new CardLayout());
-				JLabel f1=new JLabel();
-				f1.setIcon(new ImageIcon("./src//Imagenes/titulo.png"));
-				botones[i][j].add(f1);
-				botones[i][j].setBorder(BorderFactory.createLineBorder(Color.black));
-				
-				
-				add(botones[i][j]);
-			}
-		}
-	botones[3][3].setImagen("/Imagenes/iconof.png");
-		//botones[3][3].setOpaque(true);
-		botones[ancho][largo].setImagen("/Imagenes/iconof.png");
-		//botones[ancho][largo].addKeyListener(this);
+		super();
+		this.ventana=v;
+		setSize(1600,902);
+		setLayout(null);
 		
-	
-		botones[ancho][largo].addKeyListener(new KeyListener() {
-
+		JButton ciudad = new JButton("City");
+		ciudad.setBounds(730, 599, 116, 108);
+		add(ciudad);
+		
+		JButton mazmorra1 = new JButton("");
+		mazmorra1.addMouseListener(new MouseAdapter() {
 			@Override
-			public void keyPressed(KeyEvent e) {
-				System.out.println("pulsada!!");
-
-				((JPanelConFondo)botones[ancho][largo]).setImagen(null);
-				int ancho=getAncho();
-				int largo=getLargo();
-				if(e.getKeyCode()==KeyEvent.VK_W) {
-					if(ancho>1) {
-					ancho-=1;
-					}
-				}else{
-					if(e.getKeyCode()==KeyEvent.VK_S) {
-						if(ancho<botones.length-2) {
-						ancho+=1;
-							
-						}
-					}else {
-						if(e.getKeyCode()==KeyEvent.VK_D) {
-							if(largo<botones[0].length-3) {
-								largo+=1;
-								
-								}
-					}else {
-						if(e.getKeyCode()==KeyEvent.VK_A) {
-							if(largo>1) {
-								largo-=1;
-								
-								}
-							
-					}
-				
-				
-				
+			public void mouseClicked(MouseEvent arg0) {
+				System.out.println("illo");
+				ventana.cargaPantallaInformacion();
 			}
-				}
-			}
-				botones[ancho][largo]= new JPanelConFondo("/Imagenes/iconof.png");
-				setLargo(largo);
-				setAncho(ancho);
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
 		});
-	
-	
-	
-	
+		mazmorra1.setIcon(new ImageIcon(PanelMapa.class.getResource("/Imagenes/Captura.PNG")));
+		mazmorra1.setBounds(178, 270, 47, 47);
+		mazmorra1.setContentAreaFilled(false);
+		mazmorra1.setBorderPainted(false);
+		add(mazmorra1);
+		
+		JLabel lblpersonaje = new JLabel("");
+		lblpersonaje.setIcon(new ImageIcon(PanelMapa.class.getResource("/Imagenes/Personaje.png")));
+		lblpersonaje.setBounds(1016, 73, 375, 808);
+		add(lblpersonaje);
+		JProgressBar barraVida = new JProgressBar();
+		barraVida.setForeground(Color.RED);
+		barraVida.setBounds(1154, 40, 178, 29);
+		barraVida.setMaximum(ventana.getPersonaje().getVida());
+		barraVida.setValue(ventana.getPersonaje().getVida());
+		add(barraVida);
+		
+		JButton btnMochila = new JButton("Mochila");
+		btnMochila.setBounds(1401, 21, 178, 68);
+		add(btnMochila);
+		
+		JButton btnHabilidades = new JButton("Habilidades");
+		btnHabilidades.setBounds(917, 21, 178, 68);
+		add(btnHabilidades);
+		
+		JLabel lblmapa = new JLabel("");
+		lblmapa.setBounds(0, -13, 896, 904);
+		lblmapa.setIcon(new ImageIcon(PanelMapa.class.getResource("/Imagenes/mapa.jpg")));
+		add(lblmapa);
+		
+		JLabel label = new JLabel("");
+		label.setIcon(new ImageIcon(PanelMapa.class.getResource("/Imagenes/c9402baace20a38fad95143f7db3dabf.jpg")));
+		label.setBounds(747, 0, 869, 891);
+		add(label);
 	}
-	public JPanel[][] getBotones() {
-		return botones;
-	}
-	public void setBotones(JPanelConFondo[][] botones) {
-		this.botones = botones;
-	}
-
-	
-	public void setAncho(int ancho1) {
-		this.ancho=ancho1;
-	}
-	public int getAncho() {
-		return ancho;
-	}
-	public int getLargo() {
-		return largo;
-	}
-	public void setLargo(int largo) {
-		this.largo = largo;
-	}
-	
 }
