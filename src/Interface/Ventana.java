@@ -26,7 +26,8 @@ public class Ventana extends JFrame  {
 		setResizable(false);
 		this.setContentPane(inicio);
 		personaje=new Personaje("",true,new Objetos[3][3]);
-		mazmorra[0]=new Mazmorras("Casa del Anciano Harris",false,"Esta casa lleva años abandonada pero se dice que algunos saqueadores la usan como refugio");
+		mazmorra[0]=new Mazmorras("Casa del Anciano Harris",false,"Esta casa lleva años abandonada pero se dice que algunos saqueadores la usan como refugio",0);
+		mazmorra[1]=new Mazmorras("Ciudadela",false,"La ciudadela de la hermandad del acero es el sitio ideal para comprar sumisnistros medicos,armas,municion y curarse, tambien podras vender tus cosas al mercader local",1);
 		
 	}
 	public Personaje getPersonaje() {
@@ -58,7 +59,6 @@ public class Ventana extends JFrame  {
 		this.habilidades.setVisible(true);
 	}
 	public void cargaPantallaInformacion() {
-		System.out.println(mazmorra[0].getNombre());
 		if(this.informacion==null) {
 			this.informacion=new PanelInformacion(this);
 		}
@@ -71,6 +71,12 @@ public class Ventana extends JFrame  {
 	}
 	public void setMazmorra(Mazmorras[] mazmorra2) {
 		this.mazmorra = mazmorra2;
+	}
+	public PanelInformacion getInformacion() {
+		return informacion;
+	}
+	public void setInformacion(PanelInformacion informacion) {
+		this.informacion = informacion;
 	}
 	
 

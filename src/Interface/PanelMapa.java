@@ -5,27 +5,39 @@ import javax.swing.JPanel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JProgressBar;
+
+import Clases.Mazmorras;
+
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class PanelMapa extends JPanel {
 	private Ventana ventana;
+	private PanelInformacion informa;
 	public PanelMapa(Ventana v) {
 		super();
 		this.ventana=v;
 		setSize(1600,902);
 		setLayout(null);
+		informa=new PanelInformacion(ventana);
 		
-		JButton ciudad = new JButton("City");
-		ciudad.setBounds(730, 599, 116, 108);
+		JButton ciudad = new JButton("");
+		ciudad.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				ventana.cargaPantallaInformacion();
+			}
+		});
+		ciudad.setIcon(new ImageIcon(PanelMapa.class.getResource("/Imagenes/BoS_logo1.png")));
+		ciudad.setBounds(722, 599, 116, 108);
+		ciudad.setContentAreaFilled(false);
 		add(ciudad);
 		
 		JButton mazmorra1 = new JButton("");
 		mazmorra1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				System.out.println("illo");
 				ventana.cargaPantallaInformacion();
 			}
 		});
