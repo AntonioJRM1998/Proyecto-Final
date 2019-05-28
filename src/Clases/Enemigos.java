@@ -4,11 +4,15 @@ public class Enemigos {
   private String nombre;
   private int vida;
   private int daño;
-public Enemigos(String nombre, int vida, int daño) {
+  private String rutaimagen;
+  private int experiencia;
+public Enemigos(String nombre, int vida, int daño,String url,int exp) {
 	super();
 	this.nombre = nombre;
 	this.vida = vida;
 	this.daño = daño;
+	this.rutaimagen=url;
+	this.experiencia=exp;
 }
 public String getNombre() {
 	return nombre;
@@ -28,5 +32,18 @@ public int getDaño() {
 public void setDaño(int daño) {
 	this.daño = daño;
 }
+public String getRutaimagen() {
+	return rutaimagen;
+}
+public void setRutaimagen(String rutaimagen) {
+	this.rutaimagen = rutaimagen;
+}
+public int getExperiencia() {
+	return experiencia;
+}
+public void setExperiencia(int experiencia) {
+	this.experiencia = experiencia;
+}
+
   
 }

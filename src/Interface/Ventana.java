@@ -15,6 +15,7 @@ public class Ventana extends JFrame  {
 	private Objetos[][]mochila;
 	private Mazmorras[]mazmorra;
 	private PanelInformacion informacion;
+	private PanelCombate combate;
 	public Ventana() {
 		super();
 		mazmorra=new Mazmorras[20];
@@ -26,9 +27,10 @@ public class Ventana extends JFrame  {
 		setResizable(false);
 		this.setContentPane(inicio);
 		personaje=new Personaje("",true,new Objetos[3][3]);
-		mazmorra[0]=new Mazmorras("Casa del Anciano Harris",false,"Esta casa lleva años abandonada pero se dice que algunos saqueadores la usan como refugio",0);
-		mazmorra[1]=new Mazmorras("Ciudadela",false,"La ciudadela de la hermandad del acero es el sitio ideal para comprar sumisnistros medicos,armas,municion y curarse, tambien podras vender tus cosas al mercader local",1);
-		
+		Mazmorras mazmorracasa=new Mazmorras("Casa del Anciano Harris",false,"Esta casa lleva años abandonada pero se dice que algunos saqueadores la usan como refugio",0);
+		mazmorra[0]=mazmorracasa;
+		Mazmorras ciudad=new Mazmorras("Ciudadela",false,"La ciudadela de la hermandad del acero es el sitio ideal para comprar sumisnistros medicos,armas,municion y curarse, tambien podras vender tus cosas al mercader local",1);
+		mazmorra[1]=ciudad;
 	}
 	public Personaje getPersonaje() {
 		return personaje;
@@ -65,6 +67,14 @@ public class Ventana extends JFrame  {
 		this.mapa.setVisible(false);
 		this.setContentPane(this.informacion);
 		this.mapa.setVisible(true);
+	}
+	public void cargaPantallaCombate() {
+		if(this.combate==null) {
+			this.combate=new PanelCombate(this);
+		}
+		this.informacion.setVisible(false);
+		this.setContentPane(this.combate);
+		this.informacion.setVisible(true);
 	}
 	public Mazmorras[] getMazmorra() {
 		return mazmorra;

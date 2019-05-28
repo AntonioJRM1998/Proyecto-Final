@@ -19,6 +19,7 @@ import java.awt.event.MouseEvent;
 public class PanelInformacion extends JPanel {
 	private Ventana ventana;
 	private Mazmorras[]mazmorra;
+	private int id;
 	public PanelInformacion(Ventana v){
 		super();
 		this.ventana=v;
@@ -37,7 +38,7 @@ public class PanelInformacion extends JPanel {
 		btwentrar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
+				v.cargaPantallaCombate();
 			}
 		});
 		btwentrar.setFont(new Font("Tahoma", Font.BOLD, 32));
@@ -49,7 +50,7 @@ public class PanelInformacion extends JPanel {
 		textPane.setFont(new Font("Tahoma", Font.BOLD, 30));
 		textPane.setBounds(321, 324, 1046, 230);
 		textPane.setOpaque(false);
-		textPane.setText(mazmorra[0].getInformacion());
+		textPane.setText(mazmorra[this.getId()].getInformacion());
 		add(textPane);
 		
 		JLabel nombre = new JLabel(mazmorra[0].getNombre());
@@ -81,6 +82,13 @@ public class PanelInformacion extends JPanel {
 		texto=mazmorra[idee].getInformacion();
 		return texto;
 	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	
 	
 }

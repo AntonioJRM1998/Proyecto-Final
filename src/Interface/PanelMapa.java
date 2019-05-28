@@ -27,6 +27,7 @@ public class PanelMapa extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				ventana.cargaPantallaInformacion();
+				informa.setId(1);
 			}
 		});
 		ciudad.setIcon(new ImageIcon(PanelMapa.class.getResource("/Imagenes/BoS_logo1.png")));
@@ -38,6 +39,7 @@ public class PanelMapa extends JPanel {
 		mazmorra1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				informa.setId(0);
 				ventana.cargaPantallaInformacion();
 			}
 		});
