@@ -2,6 +2,7 @@ package Interface;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 
 import Clases.Mazmorras;
@@ -15,21 +16,21 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JDesktopPane;
 
 public class PanelInformacion extends JPanel {
 	private Ventana ventana;
 	private Mazmorras[]mazmorra;
-	private int id;
+	public int id;
 	public PanelInformacion(Ventana v){
 		super();
+		setInformacion(new Mazmorras[5]);
 		this.ventana=v;
 		setVisible(true);
 		setSize(1600,900);
 		setLayout(null);
-		mazmorra=ventana.getMazmorra();
 		
 		JButton btnSalir = new JButton("Salir");
-
 		btnSalir.setFont(new Font("Tahoma", Font.BOLD, 32));
 		btnSalir.setBounds(1258, 740, 226, 71);
 		add(btnSalir);
@@ -38,22 +39,26 @@ public class PanelInformacion extends JPanel {
 		btwentrar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				if(mazmorra[v.getMapa().getIdmazmorras()].isCompletada()==false) {
 				v.cargaPantallaCombate();
+			}else{
+				JOptionPane.showMessageDialog(getComponentPopupMenu(), "Esta mazmorra ya ha sido completada");
 			}
-		});
+		}
+	});
 		btwentrar.setFont(new Font("Tahoma", Font.BOLD, 32));
-		btwentrar.setBounds(190, 740, 226, 71);
+		btwentrar.setBounds(141, 740, 226, 71);
 		add(btwentrar);
 		
 		JTextPane textPane = new JTextPane();
 		textPane.setForeground(new Color(255, 255, 224));
+		textPane.setText(mazmorra[v.getMapa().getIdmazmorras()].getInformacion());
 		textPane.setFont(new Font("Tahoma", Font.BOLD, 30));
 		textPane.setBounds(321, 324, 1046, 230);
 		textPane.setOpaque(false);
-		textPane.setText(mazmorra[this.getId()].getInformacion());
 		add(textPane);
 		
-		JLabel nombre = new JLabel(mazmorra[0].getNombre());
+		JLabel nombre = new JLabel(mazmorra[v.getMapa().getIdmazmorras()].getNombre());
 		nombre.setFont(new Font("Tahoma", Font.BOLD, 27));
 		nombre.setForeground(new Color(255, 255, 255));
 		nombre.setHorizontalAlignment(SwingConstants.CENTER);
@@ -88,7 +93,12 @@ public class PanelInformacion extends JPanel {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
-	
+	public void setInformacion(Mazmorras[]maz) {
+		Mazmorras mazmorracasa=new Mazmorras("Casa del Anciano Harris",false,"Esta casa lleva años abandonada pero se dice que algunos saqueadores la usan como refugio",0);
+		maz[0]=mazmorracasa;
+		Mazmorras ciudad=new Mazmorras("Ciudadela",false,"La ciudadela de la hermandad del acero es el sitio ideal para comprar sumisnistros medicos,armas,municion y curarse, tambien podras vender tus cosas al mercader local",1);
+		maz[1]=ciudad;
+		this.mazmorra=maz;
+	}
 	
 }

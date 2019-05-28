@@ -3,6 +3,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
+import Clases.Enemigos;
 import Clases.Mazmorras;
 import Clases.Objetos;
 import Clases.Personaje;
@@ -16,21 +17,19 @@ public class Ventana extends JFrame  {
 	private Mazmorras[]mazmorra;
 	private PanelInformacion informacion;
 	private PanelCombate combate;
+	private Enemigos enemigos;
 	public Ventana() {
 		super();
 		mazmorra=new Mazmorras[20];
+		enemigos=new Enemigos();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("Fallout");
 		inicio=new PanelInicio(this);
-		setSize(1600,900);
+		setSize(1600,920);
 		setVisible(true);
 		setResizable(false);
 		this.setContentPane(inicio);
 		personaje=new Personaje("",true,new Objetos[3][3]);
-		Mazmorras mazmorracasa=new Mazmorras("Casa del Anciano Harris",false,"Esta casa lleva años abandonada pero se dice que algunos saqueadores la usan como refugio",0);
-		mazmorra[0]=mazmorracasa;
-		Mazmorras ciudad=new Mazmorras("Ciudadela",false,"La ciudadela de la hermandad del acero es el sitio ideal para comprar sumisnistros medicos,armas,municion y curarse, tambien podras vender tus cosas al mercader local",1);
-		mazmorra[1]=ciudad;
 	}
 	public Personaje getPersonaje() {
 		return personaje;
@@ -76,6 +75,14 @@ public class Ventana extends JFrame  {
 		this.setContentPane(this.combate);
 		this.informacion.setVisible(true);
 	}
+	public void cargaPantallaCombateAleatorio() {
+		if(this.combate==null) {
+			this.combate=new PanelCombate(this);
+		}
+		this.mapa.setVisible(false);
+		this.setContentPane(this.combate);
+		this.mapa.setVisible(true);
+	}
 	public Mazmorras[] getMazmorra() {
 		return mazmorra;
 	}
@@ -87,6 +94,24 @@ public class Ventana extends JFrame  {
 	}
 	public void setInformacion(PanelInformacion informacion) {
 		this.informacion = informacion;
+	}
+	public PanelMapa getMapa() {
+		return mapa;
+	}
+	public void setMapa(PanelMapa mapa) {
+		this.mapa = mapa;
+	}
+	public Enemigos getEnemigos() {
+		return enemigos;
+	}
+	public void setEnemigos(Enemigos enemigos) {
+		this.enemigos = enemigos;
+	}
+	public PanelCombate getCombate() {
+		return combate;
+	}
+	public void setCombate(PanelCombate combate) {
+		this.combate = combate;
 	}
 	
 

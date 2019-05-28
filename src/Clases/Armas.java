@@ -5,12 +5,14 @@ public class Armas {
  private int daño;
  private int duravilidad;
  private String urls;
-public Armas(String nombre, int daño, int duravilidad,String urls) {
+ private String descripcion;
+public Armas(String nombre, int daño, int duravilidad,String urls,String descripcion) {
 	super();
 	this.nombre = nombre;
 	this.daño = daño;
 	this.duravilidad = duravilidad;
 	this.urls=urls;
+	this.descripcion=descripcion;
 }
 public String getNombre() {
 	return nombre;
@@ -35,6 +37,12 @@ public String getUrls() {
 }
 public void setUrls(String urls) {
 	this.urls = urls;
+}
+public String getDescripcion() {
+	return descripcion;
+}
+public void setDescripcion(String descripcion) {
+	this.descripcion = descripcion;
 }
  
 }
