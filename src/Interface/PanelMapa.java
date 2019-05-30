@@ -1,11 +1,13 @@
 package Interface;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JProgressBar;
 
+import Clases.Enemigos;
 import Clases.Mazmorras;
 
 import java.awt.Color;
@@ -18,8 +20,10 @@ public class PanelMapa extends JPanel {
 	private int idmazmorras;
 	private PanelInformacion informa;
 	private boolean combates;
+	private Enemigos[]enemigo;
 	public PanelMapa(Ventana v) {
 		super();
+		setEnemigos(new Enemigos[5]);
 		Mazmorras[]maz=v.getMazmorra();
 		this.ventana=v;
 		setSize(1600,902);
@@ -31,6 +35,7 @@ public class PanelMapa extends JPanel {
 			public void mouseClicked(MouseEvent arg0) {
 				combates=false;
 				setIdmazmorras(1);
+				v.getCombate().crearLabels(v,getIdmazmorras(),null);
 				ventana.cargaPantallaInformacion();
 			}
 		});
@@ -39,16 +44,22 @@ public class PanelMapa extends JPanel {
 		combateAleatorio.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				if(v.getPersonaje().getVida()>0) {
 				Random ram=new Random();
-				combates=true;
 				setIdmazmorras(ram.nextInt(5));
+				combates=true;
 				ventana.cargaPantallaCombateAleatorio();
+				v.getCombate().crearLabels(v,getIdmazmorras(),enemigo);
+			}else {
+				JOptionPane.showMessageDialog(getParent(),"No tienes vida para combatir");
+			}
+				
 			}
 		});
-		combateAleatorio.setBounds(917, 813, 662, 68);
+		combateAleatorio.setBounds(917, 672, 225, 78);
 		add(combateAleatorio);
 		ciudad.setIcon(new ImageIcon(PanelMapa.class.getResource("/Imagenes/BoS_logo1.png")));
-		ciudad.setBounds(722, 599, 116, 108);
+		ciudad.setBounds(730, 602, 108, 105);
 		ciudad.setContentAreaFilled(false);
 		add(ciudad);
 		
@@ -74,7 +85,7 @@ public class PanelMapa extends JPanel {
 		JProgressBar barraVida = new JProgressBar();
 		barraVida.setForeground(Color.RED);
 		barraVida.setBounds(1105, 21, 286, 68);
-		barraVida.setMaximum(ventana.getPersonaje().getVida());
+		barraVida.setMaximum(ventana.getPersonaje().getResistencia()*20);
 		barraVida.setValue(ventana.getPersonaje().getVida());
 		add(barraVida);
 		
@@ -107,6 +118,19 @@ public class PanelMapa extends JPanel {
 	}
 	public void setCombates(boolean combates) {
 		this.combates = combates;
+	}
+	public void setEnemigos(Enemigos[]enemigos){
+		Enemigos enemigo2=new Enemigos("Sanguinario Joven",4200,50,"/Imagenes/sanguinario.png",200);
+		enemigos[0]=enemigo2;
+		Enemigos enemigo3=new Enemigos("Mirelurk",1500,25,"/Imagenes/mairleck.png",90);
+		enemigos[1]=enemigo3;
+		Enemigos enemigo4=new Enemigos("Tocho-Mosca",450,8,"/Imagenes/Tochomosca.png",10);
+		enemigos[2]=enemigo4;
+		Enemigos enemigo5=new Enemigos("Supermutante",2000,20,"/Imagenes/Supermutanteb.png",120);
+		enemigos[3]=enemigo5;
+		Enemigos enemigo6=new Enemigos("Rata-Topo",500,10,"",20);
+		enemigos[4]=enemigo6;
+		this.enemigo=enemigos;
 	}
 	
 }

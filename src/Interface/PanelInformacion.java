@@ -100,5 +100,9 @@ public class PanelInformacion extends JPanel {
 		maz[1]=ciudad;
 		this.mazmorra=maz;
 	}
+	public Mazmorras[] getMazmorra() {
+		return mazmorra;
+	}
+	
 	
 }

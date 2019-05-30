@@ -6,6 +6,7 @@ public class Enemigos {
   private int daño;
   private String rutaimagen;
   private Enemigos[]enemigos;
+  private Enemigos[]mazmorras;
   private int experiencia;
 public Enemigos(String nombre, int vida, int daño,String url,int exp) {
 	super();
@@ -49,20 +50,29 @@ public void setExperiencia(int experiencia) {
 	this.experiencia = experiencia;
 }
 public void setEnemigos(Enemigos[]enemigo){
-	Enemigos enemigo1=new Enemigos("Necrofago Harris",600,10,"/Imagenes/harris.png",50);
-	enemigo[0]=enemigo1;
 	Enemigos enemigo2=new Enemigos("Sanguinario Joven",4200,50,"",200);
-	enemigo[1]=enemigo2;
+	enemigo[0]=enemigo2;
 	Enemigos enemigo3=new Enemigos("Mirelurk",1500,25,"",90);
-	enemigo[2]=enemigo3;
-	Enemigos enemigo4=new Enemigos("Tocho-Mosca",450,8,"",10);
-	enemigo[3]=enemigo4;
+	enemigo[1]=enemigo3;
+	Enemigos enemigo4=new Enemigos("Tocho-Mosca",450,8,"/Imagenes/Tochomosca.png",10);
+	enemigo[2]=enemigo4;
 	Enemigos enemigo5=new Enemigos("Supermutante",2000,20,"",120);
-	enemigo[4]=enemigo5;
+	enemigo[3]=enemigo5;
+	Enemigos enemigo6=new Enemigos("Rata-Topo",500,10,"",20);
+	enemigo[4]=enemigo6;
 	
 	this.enemigos=enemigo;
 }
   public Enemigos[] getEnemigos() {
 	  return enemigos;
   }
+public Enemigos[] getMazmorras() {
+	return mazmorras;
+}
+public void setMazmorras(Enemigos[] mazmorras) {
+	Enemigos enemigo1=new Enemigos("Necrofago Harris",600,15,"/Imagenes/harris.png",50);
+	mazmorras[0]=enemigo1;
+	this.mazmorras = mazmorras;
+}
+  
 }

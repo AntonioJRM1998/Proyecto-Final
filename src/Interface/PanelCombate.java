@@ -34,18 +34,22 @@ public class PanelCombate extends JPanel {
 	private Armas x;
 	private int cont;
 	private Enemigos[]enemigos;
+	private Enemigos[]enemigomazmorra;
 	private boolean ajustes;
 	private int id;
 	public PanelCombate(Ventana v) {
 		super();
 		setEnemigos(enemigos=new Enemigos[5]);
+		setEnemigomazmorra(enemigomazmorra=new Enemigos[5]);
 		this.ventana=v;
 		id=v.getMapa().getIdmazmorras();
 		setSize(1600,900);
 		setLayout(null);
 		arma=new ArrayList<Armas>(10);
+		Armas puños=new Armas("Puños",0,10000000,"","Usa tus puños para derrotar a los enemigos");
 		Armas pistola10m=new Armas("Pistola de 10m",10,1000000,"/Imagenes/pistola10m.png","Es un arma muy duradera y eficiente producida por Colt Firearms antes de la Gran Guerra. Su diseño simple hace que pueda ser manufacturada con equipamiento básico. La durabilidad, manejo y su diseño simple hacen que sea muy popular entre los habitantes de yermo.");
 		Armas pistola9m=new Armas("Pistola de 9m",5,100,"/Imagenes/pistola9mm.png","Pistola mucho mas debil que la de 10mm pero no del todo inutil, puede matar enemigos pequeños como tochomoscas y ratastopo");
+		arma.add(puños);
 		arma.add(pistola10m);
 		arma.add(pistola9m);
 		
@@ -60,23 +64,18 @@ public class PanelCombate extends JPanel {
 		panel.setBounds(114, 662, 1306, 192);
 		add(panel);
 		
-		
 		JButton atacar = new JButton("Atacar");
 		atacar.setFont(new Font("Tahoma", Font.BOLD, 32));
 		
 		JButton defenderse = new JButton("Defenderse");
-		defenderse.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-			}
-		});
+		
 		defenderse.setFont(new Font("Tahoma", Font.BOLD, 32));
 		JButton btnCurarse = new JButton("Curarse");
 		btnCurarse.setFont(new Font("Tahoma", Font.BOLD, 32));
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setToolTipText("");
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Elige tu arma",arma.get(0).getNombre(),arma.get(1).getNombre()}));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {arma.get(0).getNombre(),arma.get(1).getNombre(),arma.get(2).getNombre()}));
 		
 		
 		JComboBox curacion = new JComboBox();
@@ -148,6 +147,11 @@ public class PanelCombate extends JPanel {
 		nombreEnemigo.setFont(new Font("Tahoma", Font.BOLD, 20));
 		nombreEnemigo.setHorizontalAlignment(SwingConstants.CENTER);
 		nombreEnemigo.setBounds(1142, 585, 278, 30);
+		if(v.getMapa().isCombates()==false) {
+			nombreEnemigo.setText(enemigomazmorra[id].getNombre());
+		}else {
+			nombreEnemigo.setText(enemigos[id].getNombre());
+		}
 		add(nombreEnemigo);
 		
 		JLabel nombreJugador = new JLabel(v.getPersonaje().getNombre());
@@ -159,9 +163,14 @@ public class PanelCombate extends JPanel {
 		
 		JProgressBar vidaenemigo = new JProgressBar();
 		vidaenemigo.setForeground(Color.RED);
+		if(v.getMapa().isCombates()==false) {
+		vidaenemigo.setMaximum(enemigomazmorra[id].getVida());
+		vidaenemigo.setValue(enemigomazmorra[id].getVida());
+		}else {
 		vidaenemigo.setMaximum(enemigos[id].getVida());
-		vidaenemigo.setBounds(1142, 626, 278, 32);
 		vidaenemigo.setValue(enemigos[id].getVida());
+		}
+		vidaenemigo.setBounds(1142, 626, 278, 32);
 		vidaenemigo.setStringPainted(true);
 		add(vidaenemigo);
 		
@@ -173,12 +182,7 @@ public class PanelCombate extends JPanel {
 		vidaJugador.setStringPainted(true);
 		add(vidaJugador);
 		
-		JLabel imagenenemigo = new JLabel("");
-		imagenenemigo.setIcon(new ImageIcon(PanelCombate.class.getResource(enemigos[id].getRutaimagen())));
-		imagenenemigo.setBounds(1142, 21, 278, 553);
-		add(imagenenemigo);
-		
-		
+
 		JLabel jugador = new JLabel();
 		jugador.setIcon(new ImageIcon(PanelCombate.class.getResource("/Imagenes/personakepeleas.png")));
 		jugador.setBounds(114, 21, 278, 553);
@@ -192,10 +196,10 @@ public class PanelCombate extends JPanel {
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(vidaenemigo.getValue()<=0) {
+				if(vidaenemigo.getValue()<=0||v.getPersonaje().getVida()<=0) {
 				v.cargaPantallaMapa();
-				btnNewButton.setVisible(false);
 				ajustes=false;
+				crearLabels(v, id, enemigos).setIcon(new ImageIcon(""));
 				}
 			}
 		});
@@ -203,38 +207,53 @@ public class PanelCombate extends JPanel {
 		atacar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				if(v.getMapa().isCombates()==false) {
 				if(ajustes==false) {
-				vidaenemigo.setValue(enemigos[v.getMapa().getIdmazmorras()].getVida());
-				nombreEnemigo.setText(enemigos[v.getMapa().getIdmazmorras()].getNombre());
-				imagenenemigo.setIcon(new ImageIcon(PanelCombate.class.getResource(enemigos[v.getMapa().getIdmazmorras()].getRutaimagen())));
+				vidaenemigo.setValue(enemigomazmorra[v.getMapa().getIdmazmorras()].getVida());
+				nombreEnemigo.setText(enemigomazmorra[v.getMapa().getIdmazmorras()].getNombre());
 				ajustes=true;
 				}
-				if(v.getMapa().isCombates()==false) {
-				btnNewButton.setVisible(false);
-				combateFuncion(v,enemigos,vidaenemigo,vidaJugador,textPane,x,v.getMapa().getIdmazmorras(),v.getMazmorra(),nombreEnemigo,imagenenemigo,btnNewButton);
+				combateFuncion(v,enemigomazmorra,vidaenemigo,vidaJugador,textPane,x,v.getMapa().getIdmazmorras(),v.getInformacion().getMazmorra(),btnNewButton);
 				}else{
-				btnNewButton.setVisible(false);
-				combateAleatorio(v,enemigos,vidaenemigo,vidaJugador,textPane,x,v.getMapa().getIdmazmorras(),nombreEnemigo,imagenenemigo,btnNewButton);
+				
+				if(ajustes==false) {
+					vidaenemigo.setValue(enemigos[v.getMapa().getIdmazmorras()].getVida());
+					nombreEnemigo.setText(enemigos[v.getMapa().getIdmazmorras()].getNombre());
+					ajustes=true;
+					}
+				combateAleatorio(v,enemigos,vidaenemigo,vidaJugador,textPane,x,v.getMapa().getIdmazmorras(),btnNewButton);
 				}
 			}
 		});
 		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(comboBox.getSelectedIndex()>0) {
-				x=arma.get(comboBox.getSelectedIndex()-1);
+				x=arma.get(comboBox.getSelectedIndex());
 				lblimagenarmas.setIcon(new ImageIcon(PanelCombate.class.getResource(x.getUrls())));
-				}else{
-					comboBox.setSelectedIndex(0);
-				}
 				InformacionArmas.setText("Nombre :"+x.getNombre()
 						+ "\nDaño:"+x.getDaño()
 						+ "\nDurabilidad:"+x.getDuravilidad()
 						+ "\nDescripcion:"+x.getDescripcion());
 				}
 		});
+		defenderse.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if(v.getMapa().isCombates()==false) {
+				v.getPersonaje().setVida((v.getPersonaje().getVida()-enemigomazmorra[id].getDaño())+5);
+				vidaJugador.setValue(v.getPersonaje().getVida());
+				textPane.replaceSelection(v.getPersonaje().getNombre()+" se ha defendido y ah recibido "+(enemigomazmorra[id].getDaño()-5)+"\n");	
+				}else {
+				v.getPersonaje().setVida((v.getPersonaje().getVida()-enemigos[id].getDaño())+5);
+				vidaJugador.setValue(v.getPersonaje().getVida());
+				textPane.replaceSelection(v.getPersonaje().getNombre()+" seha defendido y ah recibido "+(enemigos[id].getDaño()-5)+"\n");
+				}
+	
+			}
+		});
 		
 	}
-	public void combateFuncion(Ventana v,Enemigos[] enemigo1,JProgressBar vidaenemigo,JProgressBar vidaJugador,JTextPane textPane,Armas x,int id,Mazmorras[]maz,JLabel nombre,JLabel imagenenemigo,JButton botonsalir) {
+	//Funcion Combate de Mazmorras
+	public void combateFuncion(Ventana v,Enemigos[] enemigo1,JProgressBar vidaenemigo,JProgressBar vidaJugador,JTextPane textPane,Armas x,int id,Mazmorras[]maz,JButton botonsalir) {
 		Random ram=new Random();
 		if(v.getPersonaje().getVida()>0&&enemigo1[id].getVida()>0) {
 		if(ram.nextInt(100)>30) {
@@ -254,25 +273,24 @@ public class PanelCombate extends JPanel {
 			v.getPersonaje().setExperiencia(v.getPersonaje().getExperiencia()+enemigo1[id].getExperiencia());
 			maz[id].setCompletada(true);
 			}
-		}else {
-			botonsalir.setVisible(true);
 		}
 	}
+	//Funcion declarar enemigos
 	public void setEnemigos(Enemigos[]enemigo){
-		Enemigos enemigo1=new Enemigos("Necrofago Harris",600,10,"/Imagenes/harris.png",50);
-		enemigo[0]=enemigo1;
 		Enemigos enemigo2=new Enemigos("Sanguinario Joven",4200,50,"/Imagenes/sanguinario.png",200);
-		enemigo[1]=enemigo2;
+		enemigo[0]=enemigo2;
 		Enemigos enemigo3=new Enemigos("Mirelurk",1500,25,"/Imagenes/mairleck.png",90);
-		enemigo[2]=enemigo3;
+		enemigo[1]=enemigo3;
 		Enemigos enemigo4=new Enemigos("Tocho-Mosca",450,8,"",10);
-		enemigo[3]=enemigo4;
+		enemigo[2]=enemigo4;
 		Enemigos enemigo5=new Enemigos("Supermutante",2000,20,"",120);
-		enemigo[4]=enemigo5;
-		
+		enemigo[3]=enemigo5;
+		Enemigos enemigo6=new Enemigos("Rata-Topo",500,10,"",20);
+		enemigo[4]=enemigo6;
 		this.enemigos=enemigo;
 	}
-	public void combateAleatorio(Ventana v,Enemigos[] enemigo1,JProgressBar vidaenemigo,JProgressBar vidaJugador,JTextPane textPane,Armas x,int id,JLabel nombre,JLabel imagenenemigo,JButton botonsalir) {
+	//Funcion combate aleatorios
+	public void combateAleatorio(Ventana v,Enemigos[] enemigo1,JProgressBar vidaenemigo,JProgressBar vidaJugador,JTextPane textPane,Armas x,int id,JButton botonsalir) {
 		Random ram=new Random();
 		if(v.getPersonaje().getVida()>0&&vidaenemigo.getValue()>0) {
 		if(ram.nextInt(100)>30) {
@@ -281,6 +299,7 @@ public class PanelCombate extends JPanel {
 			v.getPersonaje().setVida(v.getPersonaje().getVida()-enemigo1[id].getDaño());
 			vidaJugador.setValue(v.getPersonaje().getVida());
 		}else{
+			System.out.println(vidaenemigo.getValue());
 			vidaenemigo.setValue((vidaenemigo.getValue()-((v.getPersonaje().getDaño()+x.getDaño())-50)));
 			textPane.replaceSelection("El enemigo se ha defendido y ha perdido "+((v.getPersonaje().getDaño()+x.getDaño())-50)+" de vida"+"\n");
 		}
@@ -288,11 +307,32 @@ public class PanelCombate extends JPanel {
 			textPane.replaceSelection("Has ganado "+enemigo1[id].getExperiencia()+" de experiencia");
 			v.getPersonaje().setExperiencia(v.getPersonaje().getExperiencia()+enemigo1[id].getExperiencia());
 			}
-		}else {
-			botonsalir.setVisible(true);
 		}
-		
 	}
+	public Enemigos[] getEnemigomazmorra() {
+		return enemigomazmorra;
+	}
+	public void setEnemigomazmorra(Enemigos[] enemigomazmorra) {
+		Enemigos enemigo1=new Enemigos("Necrofago Harris",600,15,"/Imagenes/harris.png",50);
+		enemigomazmorra[0]=enemigo1;
+		this.enemigomazmorra = enemigomazmorra;
+	}
+	public JLabel crearLabels(Ventana v,int num,Enemigos[]enemigos) {
+		JLabel imagenenemigo = new JLabel("");
+		System.out.println(enemigos[num].getRutaimagen());
+		if(v.getMapa().isCombates()==false) {
+		imagenenemigo.setIcon(new ImageIcon(PanelCombate.class.getResource(enemigomazmorra[num].getRutaimagen())));
+		}else {
+		imagenenemigo.setIcon(new ImageIcon(PanelCombate.class.getResource(enemigos[num].getRutaimagen())));	
+		}
+		imagenenemigo.setBounds(1142, 21, 278, 553);
+		imagenenemigo.setVisible(true);
+		imagenenemigo.repaint();
+		imagenenemigo.revalidate();
+		add(imagenenemigo,2);
+		return imagenenemigo;
+	}
+	
 }
 
 
