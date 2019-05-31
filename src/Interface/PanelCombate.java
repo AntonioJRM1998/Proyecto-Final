@@ -32,6 +32,8 @@ public class PanelCombate extends JPanel {
 	private Ventana ventana;
 	private ArrayList<Armas> arma;
 	private Armas x;
+	JLabel nombreEnemigo;
+	private JPanel areaFotoEnemigo;
 	private int cont;
 	private Enemigos[]enemigos;
 	private Enemigos[]enemigomazmorra;
@@ -52,6 +54,10 @@ public class PanelCombate extends JPanel {
 		arma.add(puños);
 		arma.add(pistola10m);
 		arma.add(pistola9m);
+		
+		areaFotoEnemigo = new JPanel();
+		areaFotoEnemigo.setBounds(1038, 103, 291, 401);
+		add(areaFotoEnemigo);
 		
 		JButton btnNewButton = new JButton("Salir");
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 30));
@@ -75,7 +81,7 @@ public class PanelCombate extends JPanel {
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setToolTipText("");
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {arma.get(0).getNombre(),arma.get(1).getNombre(),arma.get(2).getNombre()}));
+		comboBox.setModel(new DefaultComboBoxModel(arma.toArray()));
 		
 		
 		JComboBox curacion = new JComboBox();
@@ -142,7 +148,7 @@ public class PanelCombate extends JPanel {
 		textPane.setBounds(644, 21, 278, 553);
 		add(textPane);
 		
-		JLabel nombreEnemigo = new JLabel(enemigos[id].getNombre());
+		nombreEnemigo = new JLabel(enemigos[id].getNombre());
 		nombreEnemigo.setForeground(Color.YELLOW);
 		nombreEnemigo.setFont(new Font("Tahoma", Font.BOLD, 20));
 		nombreEnemigo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -193,11 +199,22 @@ public class PanelCombate extends JPanel {
 		label.setBounds(0, 0, 1600, 900);
 		add(label);
 		
+		JLabel imagenenemigo = new JLabel("");
+		if(v.getMapa().isCombates()==false) {
+		imagenenemigo.setIcon(new ImageIcon(PanelCombate.class.getResource(enemigomazmorra[id].getRutaimagen())));
+		}else {
+		imagenenemigo.setIcon(new ImageIcon(PanelCombate.class.getResource(enemigos[id].getRutaimagen())));	
+		}
+		imagenenemigo.setBounds(1142, 21, 278, 553);
+		imagenenemigo.setVisible(true);
+		add(imagenenemigo,2);
+		
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(vidaenemigo.getValue()<=0||v.getPersonaje().getVida()<=0) {
 				v.cargaPantallaMapa();
+				v.getMapa().ponerVida(v);
 				ajustes=false;
 				crearLabels(v, id, enemigos).setIcon(new ImageIcon(""));
 				}
@@ -319,20 +336,28 @@ public class PanelCombate extends JPanel {
 	}
 	public JLabel crearLabels(Ventana v,int num,Enemigos[]enemigos) {
 		JLabel imagenenemigo = new JLabel("");
+		JLabel nombrenemigo = new JLabel("");
 		System.out.println(enemigos[num].getRutaimagen());
 		if(v.getMapa().isCombates()==false) {
 		imagenenemigo.setIcon(new ImageIcon(PanelCombate.class.getResource(enemigomazmorra[num].getRutaimagen())));
+		nombrenemigo.setText(enemigomazmorra[num].getNombre());
 		}else {
-		imagenenemigo.setIcon(new ImageIcon(PanelCombate.class.getResource(enemigos[num].getRutaimagen())));	
+		imagenenemigo.setIcon(new ImageIcon(PanelCombate.class.getResource(enemigos[num].getRutaimagen())));
+		nombrenemigo.setText(enemigos[num].getNombre());
 		}
 		imagenenemigo.setBounds(1142, 21, 278, 553);
 		imagenenemigo.setVisible(true);
 		imagenenemigo.repaint();
 		imagenenemigo.revalidate();
-		add(imagenenemigo,2);
+		areaFotoEnemigo.removeAll();
+		nombreEnemigo.removeAll();
+		areaFotoEnemigo.setBackground(new Color(200,0,0));
+		areaFotoEnemigo.add(imagenenemigo);
+		nombreEnemigo.add(nombrenemigo);
+		areaFotoEnemigo.setVisible(true);
+		
 		return imagenenemigo;
 	}
-	
 }
 
 

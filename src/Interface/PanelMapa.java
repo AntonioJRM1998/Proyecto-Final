@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 
 import Clases.Enemigos;
@@ -14,11 +15,13 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Random;
+import javax.swing.JSlider;
 
 public class PanelMapa extends JPanel {
 	private Ventana ventana;
 	private int idmazmorras;
 	private PanelInformacion informa;
+	JProgressBar barraVida;
 	private boolean combates;
 	private Enemigos[]enemigo;
 	public PanelMapa(Ventana v) {
@@ -56,7 +59,31 @@ public class PanelMapa extends JPanel {
 				
 			}
 		});
-		combateAleatorio.setBounds(917, 672, 225, 78);
+		
+		JSlider slider = new JSlider(JSlider.VERTICAL);
+		slider.setValue(0);
+		slider.setBounds(904, 448, 47, 149);
+		slider.setPaintTicks(true);
+		slider.setInverted(false);
+		slider.setMajorTickSpacing(25);
+		slider.setMinorTickSpacing(5);
+		slider.setPaintLabels(true);
+		add(slider);
+		
+		JButton botonDescansar = new JButton("Descansar");
+		botonDescansar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				JFrame frame=new JFrame();
+				frame.setSize(400,200);
+				frame.setResizable(false);
+				frame.setVisible(true);
+				frame.add(new PanelDescanso(v));
+			}
+		});
+		botonDescansar.setBounds(904, 602, 178, 68);
+		add(botonDescansar);
+		combateAleatorio.setBounds(904, 682, 178, 68);
 		add(combateAleatorio);
 		ciudad.setIcon(new ImageIcon(PanelMapa.class.getResource("/Imagenes/BoS_logo1.png")));
 		ciudad.setBounds(730, 602, 108, 105);
@@ -82,9 +109,10 @@ public class PanelMapa extends JPanel {
 		lblpersonaje.setIcon(new ImageIcon(PanelMapa.class.getResource("/Imagenes/PersonajeMapa.png")));
 		lblpersonaje.setBounds(1073, 155, 328, 637);
 		add(lblpersonaje);
-		JProgressBar barraVida = new JProgressBar();
+		barraVida = new JProgressBar();
 		barraVida.setForeground(Color.RED);
 		barraVida.setBounds(1105, 21, 286, 68);
+		barraVida.setStringPainted(true);
 		barraVida.setMaximum(ventana.getPersonaje().getResistencia()*20);
 		barraVida.setValue(ventana.getPersonaje().getVida());
 		add(barraVida);
@@ -126,11 +154,13 @@ public class PanelMapa extends JPanel {
 		enemigos[1]=enemigo3;
 		Enemigos enemigo4=new Enemigos("Tocho-Mosca",450,8,"/Imagenes/Tochomosca.png",10);
 		enemigos[2]=enemigo4;
-		Enemigos enemigo5=new Enemigos("Supermutante",2000,20,"/Imagenes/Supermutanteb.png",120);
+		Enemigos enemigo5=new Enemigos("Supermutante",2000,20,"/Imagenes/Supermuntateb.png",120);
 		enemigos[3]=enemigo5;
 		Enemigos enemigo6=new Enemigos("Rata-Topo",500,10,"",20);
 		enemigos[4]=enemigo6;
 		this.enemigo=enemigos;
 	}
-	
+	public void ponerVida(Ventana v) {
+		barraVida.setValue(v.getPersonaje().getVida());
+	}
 }

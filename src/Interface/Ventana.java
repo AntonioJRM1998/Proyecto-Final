@@ -18,6 +18,7 @@ public class Ventana extends JFrame  {
 	private PanelInformacion informacion;
 	private PanelCombate combate;
 	private Enemigos enemigos;
+	private PanelDescanso descanso;
 	public Ventana() {
 		super();
 		mazmorra=new Mazmorras[20];
@@ -113,6 +114,13 @@ public class Ventana extends JFrame  {
 	public void setCombate(PanelCombate combate) {
 		this.combate = combate;
 	}
+	public PanelDescanso getDescanso() {
+		return descanso;
+	}
+	public void setDescanso(PanelDescanso descanso) {
+		this.descanso = descanso;
+	}
+	
 	
 
 }
