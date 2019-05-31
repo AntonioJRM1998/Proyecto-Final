@@ -20,12 +20,15 @@ import javax.swing.JSlider;
 public class PanelMapa extends JPanel {
 	private Ventana ventana;
 	private int idmazmorras;
+	private int sueño;
+	JProgressBar sueñometro;
 	private PanelInformacion informa;
 	JProgressBar barraVida;
 	private boolean combates;
 	private Enemigos[]enemigo;
 	public PanelMapa(Ventana v) {
 		super();
+		setSueño(100);
 		setEnemigos(new Enemigos[5]);
 		Mazmorras[]maz=v.getMazmorra();
 		this.ventana=v;
@@ -53,22 +56,14 @@ public class PanelMapa extends JPanel {
 				combates=true;
 				ventana.cargaPantallaCombateAleatorio();
 				v.getCombate().crearLabels(v,getIdmazmorras(),enemigo);
+				v.getCombate().crearNombre(v, getIdmazmorras(),enemigo);
+				v.getCombate().modificarBarravida(v, getIdmazmorras(),enemigo);
 			}else {
 				JOptionPane.showMessageDialog(getParent(),"No tienes vida para combatir");
 			}
 				
 			}
 		});
-		
-		JSlider slider = new JSlider(JSlider.VERTICAL);
-		slider.setValue(0);
-		slider.setBounds(904, 448, 47, 149);
-		slider.setPaintTicks(true);
-		slider.setInverted(false);
-		slider.setMajorTickSpacing(25);
-		slider.setMinorTickSpacing(5);
-		slider.setPaintLabels(true);
-		add(slider);
 		
 		JButton botonDescansar = new JButton("Descansar");
 		botonDescansar.addMouseListener(new MouseAdapter() {
@@ -78,12 +73,21 @@ public class PanelMapa extends JPanel {
 				frame.setSize(400,200);
 				frame.setResizable(false);
 				frame.setVisible(true);
-				frame.add(new PanelDescanso(v));
+				frame.getContentPane().add(new PanelDescanso(v));
 			}
 		});
-		botonDescansar.setBounds(904, 602, 178, 68);
+		
+		sueñometro = new JProgressBar();
+		sueñometro.setStringPainted(true);
+		sueñometro.setValue(getSueño());
+		sueñometro.setForeground(Color.YELLOW);
+		sueñometro.setBounds(1302, 783, 277, 67);
+		add(sueñometro);
+		
+		
+		botonDescansar.setBounds(1103, 782, 178, 68);
 		add(botonDescansar);
-		combateAleatorio.setBounds(904, 682, 178, 68);
+		combateAleatorio.setBounds(904, 782, 178, 68);
 		add(combateAleatorio);
 		ciudad.setIcon(new ImageIcon(PanelMapa.class.getResource("/Imagenes/BoS_logo1.png")));
 		ciudad.setBounds(730, 602, 108, 105);
@@ -107,7 +111,7 @@ public class PanelMapa extends JPanel {
 		
 		JLabel lblpersonaje = new JLabel("");
 		lblpersonaje.setIcon(new ImageIcon(PanelMapa.class.getResource("/Imagenes/PersonajeMapa.png")));
-		lblpersonaje.setBounds(1073, 155, 328, 637);
+		lblpersonaje.setBounds(1056, 110, 364, 651);
 		add(lblpersonaje);
 		barraVida = new JProgressBar();
 		barraVida.setForeground(Color.RED);
@@ -162,5 +166,14 @@ public class PanelMapa extends JPanel {
 	}
 	public void ponerVida(Ventana v) {
 		barraVida.setValue(v.getPersonaje().getVida());
+		sueñometro.setValue(getSueño());
+		
 	}
+	public int getSueño() {
+		return sueño;
+	}
+	public void setSueño(int sueño) {
+		this.sueño = sueño;
+	}
+	
 }
