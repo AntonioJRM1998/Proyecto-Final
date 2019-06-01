@@ -8,12 +8,19 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 
+import Clases.BaseDatos;
 import Clases.Enemigos;
 import Clases.Mazmorras;
+
 
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Random;
 import javax.swing.JSlider;
 
@@ -23,6 +30,8 @@ public class PanelMapa extends JPanel {
 	private int sueño;
 	JProgressBar sueñometro;
 	private PanelInformacion informa;
+	private Mazmorras[]mazmorra;
+	private Connection conn;
 	JProgressBar barraVida;
 	private boolean combates;
 	private Enemigos[]enemigo;
@@ -30,7 +39,7 @@ public class PanelMapa extends JPanel {
 		super();
 		setSueño(100);
 		setEnemigos(new Enemigos[5]);
-		Mazmorras[]maz=v.getMazmorra();
+		setMazmorra(new Mazmorras[2]);
 		this.ventana=v;
 		setSize(1600,902);
 		setLayout(null);
@@ -40,9 +49,11 @@ public class PanelMapa extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				combates=false;
-				setIdmazmorras(1);
-				v.getCombate().crearLabels(v,getIdmazmorras(),null);
+				setIdmazmorras(0);
 				ventana.cargaPantallaInformacion();
+				v.getCombate().crearLabels(v,getIdmazmorras(),enemigo);
+				v.getCombate().crearNombre(v, getIdmazmorras(),enemigo);
+				v.getCombate().modificarBarravida(v, getIdmazmorras(),enemigo);
 			}
 		});
 		
@@ -54,10 +65,6 @@ public class PanelMapa extends JPanel {
 				Random ram=new Random();
 				setIdmazmorras(ram.nextInt(5));
 				combates=true;
-				ventana.cargaPantallaCombateAleatorio();
-				v.getCombate().crearLabels(v,getIdmazmorras(),enemigo);
-				v.getCombate().crearNombre(v, getIdmazmorras(),enemigo);
-				v.getCombate().modificarBarravida(v, getIdmazmorras(),enemigo);
 			}else {
 				JOptionPane.showMessageDialog(getParent(),"No tienes vida para combatir");
 			}
@@ -77,17 +84,52 @@ public class PanelMapa extends JPanel {
 			}
 		});
 		
+		JButton btnNewButton = new JButton("Guardar Partida");
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.println(v.getPersonaje().getNombre());
+				try {
+					conn=DriverManager.getConnection(BaseDatos.bdNombre,BaseDatos.bdUsuario,BaseDatos.bdContraseña);
+					Statement registerpokemon=conn.createStatement();
+					PreparedStatement statement = conn.prepareStatement("TRUNCATE " + "personaje");
+						  statement.executeUpdate();
+					
+					PreparedStatement loginStatement=conn.prepareStatement(
+					        "insert into personaje (Nombre,genero,vida,fuerza,inteligencia,carisma,resistencia,nivel,experiencia,daño,puntoshabilidades"
+					                        + ") values('"+v.getPersonaje().getNombre()+"',"+v.getPersonaje().getGenero()+",'"+v.getPersonaje().getVida()+
+					                        "','"+v.getPersonaje().getFuerza()+"','"+v.getPersonaje().getInteligencia()+
+					                        "','"+v.getPersonaje().getCarisma()+"','"+v.getPersonaje().getResistencia()+"','"+v.getPersonaje().getNivel()+
+					                        "','"+v.getPersonaje().getExperiencia()+"','"+v.getPersonaje().getDaño()+"',"+v.getPersonaje().getPuntoshabilidades()+")");
+				for(int c=0;c<mazmorra.length;c++) {
+					System.out.println(mazmorra[c].isCompletada());
+					PreparedStatement loginStatement1=conn.prepareStatement(
+					        "insert into personaje (completada"
+					                        + ") values('"+mazmorra[c].isCompletada()+")");
+				}
+					
+					loginStatement.executeUpdate();
+					JOptionPane.showConfirmDialog(getComponentPopupMenu(), "Se han guardado los datos");
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnNewButton.setBounds(898, 723, 235, 54);
+		add(btnNewButton);
+		
 		sueñometro = new JProgressBar();
 		sueñometro.setStringPainted(true);
 		sueñometro.setValue(getSueño());
 		sueñometro.setForeground(Color.YELLOW);
-		sueñometro.setBounds(1302, 783, 277, 67);
+		sueñometro.setBounds(1323, 783, 277, 67);
 		add(sueñometro);
 		
 		
-		botonDescansar.setBounds(1103, 782, 178, 68);
+		botonDescansar.setBounds(1152, 781, 160, 68);
 		add(botonDescansar);
-		combateAleatorio.setBounds(904, 782, 178, 68);
+		combateAleatorio.setBounds(898, 781, 235, 68);
 		add(combateAleatorio);
 		ciudad.setIcon(new ImageIcon(PanelMapa.class.getResource("/Imagenes/BoS_logo1.png")));
 		ciudad.setBounds(730, 602, 108, 105);
@@ -126,6 +168,22 @@ public class PanelMapa extends JPanel {
 		add(btnMochila);
 		
 		JButton btnHabilidades = new JButton("Habilidades");
+		btnHabilidades.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				JFrame habilidad=new JFrame();
+				System.out.println(v.getAtributos().getArmas());
+				v.getAtributos().setArmas(v.getPersonaje().getFuerza()*2);
+				v.getAtributos().setConversacion(v.getPersonaje().getCarisma()*2);
+				v.getAtributos().setCiencia(v.getPersonaje().getInteligencia()*2);
+				v.getAtributos().setMedicina(v.getPersonaje().getInteligencia()*2);
+				v.getAtributos().setReparacion(v.getPersonaje().getInteligencia()*2);
+				habilidad.setSize(500,700);
+				habilidad.setVisible(true);
+				habilidad.getContentPane().add(new PanelAtributos(v));
+				
+			}
+		});
 		btnHabilidades.setBounds(917, 21, 178, 68);
 		add(btnHabilidades);
 		
@@ -164,6 +222,16 @@ public class PanelMapa extends JPanel {
 		enemigos[4]=enemigo6;
 		this.enemigo=enemigos;
 	}
+	public void setMazmorra(Mazmorras[]maz) {
+		Mazmorras mazmorracasa=new Mazmorras("Casa del Anciano Harris",false,"Esta casa lleva años abandonada pero se dice que algunos saqueadores la usan como refugio",0);
+		maz[0]=mazmorracasa;
+		Mazmorras ciudad=new Mazmorras("Ciudadela",false,"La ciudadela de la hermandad del acero es el sitio ideal para comprar sumisnistros medicos,armas,municion y curarse, tambien podras vender tus cosas al mercader local",1);
+		maz[1]=ciudad;
+		this.mazmorra=maz;
+	}
+	public Enemigos[] getEnemigos(){
+		return enemigo;
+	}
 	public void ponerVida(Ventana v) {
 		barraVida.setValue(v.getPersonaje().getVida());
 		sueñometro.setValue(getSueño());
@@ -175,5 +243,4 @@ public class PanelMapa extends JPanel {
 	public void setSueño(int sueño) {
 		this.sueño = sueño;
 	}
-	
 }

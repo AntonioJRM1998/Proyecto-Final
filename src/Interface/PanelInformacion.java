@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.JDesktopPane;
 
 public class PanelInformacion extends JPanel {
@@ -41,6 +42,10 @@ public class PanelInformacion extends JPanel {
 			public void mouseClicked(MouseEvent arg0) {
 				if(mazmorra[v.getMapa().getIdmazmorras()].isCompletada()==false) {
 				v.cargaPantallaCombate();
+				ventana.cargaPantallaCombateAleatorio();
+				v.getCombate().crearLabels(v,v.getMapa().getIdmazmorras(),v.getMapa().getEnemigos());
+				v.getCombate().crearNombre(v,v.getMapa().getIdmazmorras(),v.getMapa().getEnemigos());
+				v.getCombate().modificarBarravida(v,v.getMapa().getIdmazmorras(),v.getMapa().getEnemigos());
 			}else{
 				JOptionPane.showMessageDialog(getComponentPopupMenu(), "Esta mazmorra ya ha sido completada");
 			}
@@ -73,7 +78,7 @@ public class PanelInformacion extends JPanel {
 		
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ventana.cargaPantallaMapa();
+				ventana.cargaPantallaMapaInformacion();
 			}
 		});
 		

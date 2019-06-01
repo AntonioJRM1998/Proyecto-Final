@@ -370,10 +370,8 @@ public class PanelHabilidades extends JPanel {
 				if(ventana.getPersonaje().getPuntoshabilidades()==0&&camponombre.getText().length()>0&&ventana.getPersonaje().getGenero()!=null) {
 				ventana.getPersonaje().setNombre(camponombre.getText());
 				asignarHabilidades(habilidad,ventana.getPersonaje());
-				System.out.println(ventana.getPersonaje().getVida());
 				ventana.cargaPantallaMapa();
 				}else {
-					System.out.println(ventana.getPersonaje().getVida());
 					ventana.cargaPantallaMapa();
 				}
 			}

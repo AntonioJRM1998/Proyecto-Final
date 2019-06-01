@@ -1,7 +1,6 @@
 package Clases;
 
 public class Habilidades {
-	private Personaje personaje;
 	private int puntosHabilidades;
 	private int armas;
 	private int conversacion;

@@ -47,7 +47,7 @@ public class PanelCombate extends JPanel {
 	public PanelCombate(Ventana v) {
 		super();
 		setEnemigos(enemigos=new Enemigos[5]);
-		setEnemigomazmorra(enemigomazmorra=new Enemigos[5]);
+		setEnemigomazmorra(enemigomazmorra=new Enemigos[1]);
 		this.ventana=v;
 		id=v.getMapa().getIdmazmorras();
 		setSize(1600,900);
@@ -83,7 +83,7 @@ public class PanelCombate extends JPanel {
 		add(nombrenemy);
 		
 		areaFotoEnemigo = new JPanel();
-		areaFotoEnemigo.setBounds(1142, 223, 278, 330);
+		areaFotoEnemigo.setBounds(1142, 99, 278, 454);
 		add(areaFotoEnemigo);
 		
 		JButton btnNewButton = new JButton("Salir");
@@ -179,7 +179,7 @@ public class PanelCombate extends JPanel {
 		textPane.setBounds(644, 21, 278, 553);
 		add(textPane);
 		if(v.getMapa().isCombates()==false) {
-			nombreEnemigo.setText(enemigomazmorra[id].getNombre());
+			System.out.println(enemigomazmorra[id].getNombre());
 		}else{
 			
 		}
@@ -206,10 +206,9 @@ public class PanelCombate extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(vidaenemigos.getValue()<=0||v.getPersonaje().getVida()<=0) {
-				v.cargaPantallaMapa();
+				v.cargaPantallaMapaCombatesAl();
 				v.getMapa().ponerVida(v);
 				ajustes=false;
-				crearLabels(v, id, enemigos).setIcon(new ImageIcon(""));
 				}
 			}
 		});
@@ -336,6 +335,7 @@ public class PanelCombate extends JPanel {
 	}
 	public void crearNombre(Ventana v,int num,Enemigos[]enemigos) {
 		JLabel nombrenemigo = new JLabel("");
+		System.out.println(v.getMapa().isCombates());
 		if(v.getMapa().isCombates()==false) {
 			nombrenemigo.setText(enemigomazmorra[num].getNombre());
 			}else {
