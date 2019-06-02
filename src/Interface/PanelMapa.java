@@ -19,6 +19,7 @@ import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Random;
@@ -51,9 +52,6 @@ public class PanelMapa extends JPanel {
 				combates=false;
 				setIdmazmorras(0);
 				ventana.cargaPantallaInformacion();
-				v.getCombate().crearLabels(v,getIdmazmorras(),enemigo);
-				v.getCombate().crearNombre(v, getIdmazmorras(),enemigo);
-				v.getCombate().modificarBarravida(v, getIdmazmorras(),enemigo);
 			}
 		});
 		
@@ -65,6 +63,11 @@ public class PanelMapa extends JPanel {
 				Random ram=new Random();
 				setIdmazmorras(ram.nextInt(5));
 				combates=true;
+				v.cargaPantallaCombateAleatorio();
+				v.getCombate().crearLabels(v,getIdmazmorras(),enemigo);
+				v.getCombate().crearNombre(v, getIdmazmorras(),enemigo);
+				v.getCombate().modificarBarravida(v, getIdmazmorras(),enemigo);
+				v.getCombate().modificarMiVida(v);
 			}else {
 				JOptionPane.showMessageDialog(getParent(),"No tienes vida para combatir");
 			}
@@ -91,12 +94,9 @@ public class PanelMapa extends JPanel {
 				System.out.println(v.getPersonaje().getNombre());
 				try {
 					conn=DriverManager.getConnection(BaseDatos.bdNombre,BaseDatos.bdUsuario,BaseDatos.bdContraseña);
-					PreparedStatement loginStatement1=null;
 					Statement registerpokemon=conn.createStatement();
 					PreparedStatement statement = conn.prepareStatement("TRUNCATE " + "personaje");
-					PreparedStatement statement1=conn.prepareStatement(" TRUNCATE " + " mazmorras ");
 					statement.executeUpdate();
-					statement1.executeUpdate();
 					
 					PreparedStatement loginStatement=conn.prepareStatement(
 					        "insert into personaje (Nombre,genero,vida,fuerza,inteligencia,carisma,resistencia,nivel,experiencia,daño,puntoshabilidades"
@@ -104,20 +104,7 @@ public class PanelMapa extends JPanel {
 					                        "','"+v.getPersonaje().getFuerza()+"','"+v.getPersonaje().getInteligencia()+
 					                        "','"+v.getPersonaje().getCarisma()+"','"+v.getPersonaje().getResistencia()+"','"+v.getPersonaje().getNivel()+
 					                        "','"+v.getPersonaje().getExperiencia()+"','"+v.getPersonaje().getDaño()+"',"+v.getPersonaje().getPuntoshabilidades()+")");
-				for(int c=0;c<mazmorra.length;c++) {
-					if(mazmorra[c].isCompletada()==false) {
-						System.out.println(mazmorra[c].isCompletada()+""+mazmorra[c].getNombre());
-						loginStatement1=conn.prepareStatement(
-						      "insert into mazmorras (completada,nombre"
-						                        + ") values('"+0+"','"+mazmorra[c].getNombre()+"')");
-						loginStatement1.executeUpdate();
-					}else {
-						loginStatement1=conn.prepareStatement(
-					        "insert into mazmorras (completada,nombre"
-					                        + ") values('"+1+"','"+mazmorra[c].getNombre()+"')");
-					}
-					
-				}
+					v.getCombate().guardarMazmorra(getMazmorra());
 					loginStatement.executeUpdate();
 					JOptionPane.showConfirmDialog(getComponentPopupMenu(), "Se han guardado los datos");
 				} catch (SQLException e1) {
@@ -152,7 +139,8 @@ public class PanelMapa extends JPanel {
 			public void mouseClicked(MouseEvent arg0) {
 				setIdmazmorras(0);
 				combates=false;
-				ventana.cargaPantallaInformacion();
+				ventana.cargaPantallaInformacion();	
+				v.getInformacion().setInformacion(mazmorra);
 			}
 		});
 		mazmorra1.setIcon(new ImageIcon(PanelMapa.class.getResource("/Imagenes/Captura.PNG")));
@@ -233,7 +221,14 @@ public class PanelMapa extends JPanel {
 		this.enemigo=enemigos;
 	}
 	public void setMazmorra(Mazmorras[]maz) {
-		this.mazmorra=ventana.getMazmorra();
+		Mazmorras mazmorracasa=new Mazmorras("Casa del Anciano Harris",false,"Esta casa lleva años abandonada pero se dice que algunos saqueadores la usan como refugio",0);
+		maz[0]=mazmorracasa;
+		Mazmorras ciudad=new Mazmorras("Ciudadela",false,"La ciudadela de la hermandad del acero es el sitio ideal para comprar sumisnistros medicos,armas,municion y curarse, tambien podras vender tus cosas al mercader local",1);
+		maz[1]=ciudad;
+		this.mazmorra=maz;
+	}
+	public Mazmorras[] getMazmorra() {
+		return mazmorra;
 	}
 	public Enemigos[] getEnemigos(){
 		return enemigo;
@@ -248,5 +243,14 @@ public class PanelMapa extends JPanel {
 	}
 	public void setSueño(int sueño) {
 		this.sueño = sueño;
+	}
+	public void cargarMazmorras(ResultSet mazmo) {
+		try {
+			mazmorra[0].setCompletada(mazmo.getInt("completada")==0?false:true);
+			mazmorra[1].setCompletada(mazmo.getInt("completada")==0?false:true);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

@@ -62,9 +62,15 @@ public class PanelInicio extends JPanel {
             executeStatement=bd.createStatement();
             Statement po=bd.createStatement();
             ResultSet mipokemo=po.executeQuery("select * from personaje");
+
             if(mipokemo.next()) {
             	cargarPersonaje(mipokemo);
+            	mipokemo.close();
+            	ResultSet dungeon=po.executeQuery("select * from mazmorras");
+            	if(dungeon.next()) {
             	ventana.cargaPantallaMapaInicio();
+            	ventana.getMapa().cargarMazmorras(dungeon);
+            	}
             }
             
             

@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JProgressBar;
 
 import Clases.Armas;
+import Clases.BaseDatos;
 import Clases.Enemigos;
 import Clases.Mazmorras;
 
@@ -15,6 +16,12 @@ import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.SwingConstants;
@@ -35,8 +42,10 @@ public class PanelCombate extends JPanel {
 	private Armas x;
 	private JPanel nombrenemy ;
 	private JPanel panelVidaEnemy;
-	JLabel nombreEnemigo;
+	private Connection conn;
+	private JLabel nombreEnemigo;
 	private JProgressBar vidaenemigos;
+	private JProgressBar vidaJugador;
 	private JPanel areaFotoEnemigo;
 	private int cont;
 	private JPanel miVida;
@@ -65,13 +74,6 @@ public class PanelCombate extends JPanel {
 		miVida.setBounds(114, 626, 278, 32);
 		add(miVida);
 		miVida.setLayout(new BorderLayout(0, 0));
-		
-		JProgressBar vidaJugador = new JProgressBar();
-		miVida.add(vidaJugador);
-		vidaJugador.setForeground(Color.RED);
-		vidaJugador.setMaximum(v.getPersonaje().getResistencia()*20);
-		vidaJugador.setValue(v.getPersonaje().getVida());
-		vidaJugador.setStringPainted(true);
 		
 		panelVidaEnemy = new JPanel();
 		panelVidaEnemy.setBounds(1142, 626, 278, 32);
@@ -217,7 +219,7 @@ public class PanelCombate extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				if(v.getMapa().isCombates()==false) {
-				combateFuncion(v,enemigomazmorra,vidaenemigos,vidaJugador,textPane,x,v.getMapa().getIdmazmorras(),v.getInformacion().getMazmorra(),btnNewButton);
+				combateFuncion(v,enemigomazmorra,vidaenemigos,vidaJugador,textPane,x,v.getMapa().getIdmazmorras(),v.getMapa().getMazmorra(),btnNewButton);
 				}else{	
 				combateAleatorio(v,enemigos,vidaenemigos,vidaJugador,textPane,x,v.getMapa().getIdmazmorras(),btnNewButton);
 				}
@@ -267,13 +269,28 @@ public class PanelCombate extends JPanel {
 			textPane.replaceSelection("El enemigo se ha defendido y ha perdido "+(v.getPersonaje().getDaño()-50+x.getDaño())+" de vida"+"\n");
 		}
 		if(enemigo1[id].getVida()<=0) {
-			System.out.println("entra aqui"+maz[id].getNombre());
 			textPane.replaceSelection("Has ganado "+enemigo1[id].getExperiencia()+" de experiencia");
 			v.getPersonaje().setExperiencia(v.getPersonaje().getExperiencia()+enemigo1[id].getExperiencia());
 			maz[id].setCompletada(true);
-			System.out.println(maz[id].isCompletada());
-			}
+			
+			FileWriter ficheroEscribir = null;
+
+                try {
+					ficheroEscribir = new FileWriter("mazmorrascompletadas.txt");
+				    // Escribimos linea a linea en el fichero
+
+                    ficheroEscribir.write("La mazmorra: "+maz[id].getNombre()+"\n"+
+                                          "Ha sido completada por: "+v.getPersonaje().getNombre());
+
+                ficheroEscribir.close();
+			
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
 		}
+	}
 	}
 	//Funcion declarar enemigos
 	public void setEnemigos(Enemigos[]enemigo){
@@ -369,9 +386,43 @@ public class PanelCombate extends JPanel {
 		
 		
 	}
-	public void modificarMiVida(Ventana v,int num,Enemigos[]enemigos) {
-		
+	public void modificarMiVida(Ventana v) {
+		vidaJugador=new JProgressBar();
+		vidaJugador.setMaximum(v.getPersonaje().getResistencia()*20);
+		vidaJugador.setValue(v.getPersonaje().getVida());
+		vidaJugador.setForeground(Color.RED);
+		vidaJugador.setStringPainted(true);
+		vidaJugador.setVisible(true);
+		miVida.removeAll();
+		miVida.add(vidaJugador);
 	}
+	public void guardarMazmorra(Mazmorras[]mazmorra) {
+		try {
+			conn=DriverManager.getConnection(BaseDatos.bdNombre,BaseDatos.bdUsuario,BaseDatos.bdContraseña);
+			PreparedStatement loginStatement1=null;
+			PreparedStatement statement1=conn.prepareStatement(" TRUNCATE " + " mazmorras ");
+			statement1.executeUpdate();
+			for(int c=0;c<mazmorra.length;c++) {
+				if(mazmorra[c].isCompletada()==false) {
+					loginStatement1=conn.prepareStatement(
+					      "insert into mazmorras (completada,nombre"
+					                        + ") values('"+0+"','"+mazmorra[c].getNombre()+"')");
+					loginStatement1.executeUpdate();
+				}else {
+					loginStatement1=conn.prepareStatement(
+				        "insert into mazmorras (completada,nombre"
+				                        + ") values('"+1+"','"+mazmorra[c].getNombre()+"')");
+					loginStatement1.executeUpdate();
+				}
+				
+			}
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+}
 }
 
 

@@ -25,8 +25,9 @@ public class PanelInformacion extends JPanel {
 	public int id;
 	public PanelInformacion(Ventana v){
 		super();
-		setInformacion(new Mazmorras[5]);
 		this.ventana=v;
+		mazmorra=new Mazmorras[2];
+		mazmorra=v.getMapa().getMazmorra();
 		setVisible(true);
 		setSize(1600,900);
 		setLayout(null);
@@ -46,6 +47,7 @@ public class PanelInformacion extends JPanel {
 				v.getCombate().crearLabels(v,v.getMapa().getIdmazmorras(),v.getMapa().getEnemigos());
 				v.getCombate().crearNombre(v,v.getMapa().getIdmazmorras(),v.getMapa().getEnemigos());
 				v.getCombate().modificarBarravida(v,v.getMapa().getIdmazmorras(),v.getMapa().getEnemigos());
+				v.getCombate().modificarMiVida(v);
 			}else{
 				JOptionPane.showMessageDialog(getComponentPopupMenu(), "Esta mazmorra ya ha sido completada");
 			}
@@ -99,10 +101,6 @@ public class PanelInformacion extends JPanel {
 		this.id = id;
 	}
 	public void setInformacion(Mazmorras[]maz) {
-		Mazmorras mazmorracasa=new Mazmorras("Casa del Anciano Harris",false,"Esta casa lleva años abandonada pero se dice que algunos saqueadores la usan como refugio",0);
-		maz[0]=mazmorracasa;
-		Mazmorras ciudad=new Mazmorras("Ciudadela",false,"La ciudadela de la hermandad del acero es el sitio ideal para comprar sumisnistros medicos,armas,municion y curarse, tambien podras vender tus cosas al mercader local",1);
-		maz[1]=ciudad;
 		this.mazmorra=maz;
 	}
 	public Mazmorras[] getMazmorra() {
