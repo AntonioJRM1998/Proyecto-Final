@@ -64,8 +64,8 @@ public class PanelCombate extends JPanel {
 		arma=new ArrayList<Armas>(10);
 		ArrayList<String> nombrearmas= new ArrayList<String>(10);
 		Armas puños=new Armas("Puños",0,10000000,"","Usa tus puños para derrotar a los enemigos");
-		Armas pistola10m=new Armas("Pistola de 10m",10,1000000,"/Imagenes/pistola10m.png","Es un arma muy duradera y eficiente producida por Colt Firearms antes de la Gran Guerra. Su diseño simple hace que pueda ser manufacturada con equipamiento básico. La durabilidad, manejo y su diseño simple hacen que sea muy popular entre los habitantes de yermo.");
-		Armas pistola9m=new Armas("Pistola de 9m",5,100,"/Imagenes/pistola9mm.png","Pistola mucho mas debil que la de 10mm pero no del todo inutil, puede matar enemigos pequeños como tochomoscas y ratastopo");
+		Armas pistola10m=new Armas("Pistola de 10m",10+(v.getAtributos().getArmas()*2),1000000,"/Imagenes/pistola10m.png","Es un arma muy duradera y eficiente producida por Colt Firearms antes de la Gran Guerra. Su diseño simple hace que pueda ser manufacturada con equipamiento básico. La durabilidad, manejo y su diseño simple hacen que sea muy popular entre los habitantes de yermo.");
+		Armas pistola9m=new Armas("Pistola de 9m",5+(v.getAtributos().getArmas()*2),100,"/Imagenes/pistola9mm.png","Pistola mucho mas debil que la de 10mm pero no del todo inutil, puede matar enemigos pequeños como tochomoscas y ratastopo");
 		arma.add(puños);
 		arma.add(pistola10m);
 		arma.add(pistola9m);

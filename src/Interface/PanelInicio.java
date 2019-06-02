@@ -91,6 +91,11 @@ public class PanelInicio extends JPanel {
 	        ventana.getPersonaje().setNivel(mipokemo.getInt("nivel"));
 	        ventana.getPersonaje().setPuntoshabilidades(mipokemo.getInt("puntoshabilidades"));
 	        ventana.getPersonaje().setResistencia(mipokemo.getInt("resistencia"));
+	        ventana.getAtributos().setArmas(ventana.getPersonaje().getFuerza()*2);
+	        ventana.getAtributos().setConversacion(ventana.getPersonaje().getCarisma()*2);
+	        ventana.getAtributos().setCiencia(ventana.getPersonaje().getInteligencia()*2);
+	        ventana.getAtributos().setMedicina(ventana.getPersonaje().getInteligencia()*2);
+	        ventana.getAtributos().setReparacion(ventana.getPersonaje().getInteligencia()*2);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

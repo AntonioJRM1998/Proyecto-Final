@@ -80,7 +80,7 @@ public class PanelMapa extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				JFrame frame=new JFrame();
-				frame.setSize(400,200);
+				frame.setSize(400,250);
 				frame.setResizable(false);
 				frame.setVisible(true);
 				frame.getContentPane().add(new PanelDescanso(v));
@@ -171,12 +171,7 @@ public class PanelMapa extends JPanel {
 			public void mouseClicked(MouseEvent arg0) {
 				JFrame habilidad=new JFrame();
 				System.out.println(v.getAtributos().getArmas());
-				v.getAtributos().setArmas(v.getPersonaje().getFuerza()*2);
-				v.getAtributos().setConversacion(v.getPersonaje().getCarisma()*2);
-				v.getAtributos().setCiencia(v.getPersonaje().getInteligencia()*2);
-				v.getAtributos().setMedicina(v.getPersonaje().getInteligencia()*2);
-				v.getAtributos().setReparacion(v.getPersonaje().getInteligencia()*2);
-				habilidad.setSize(500,700);
+				habilidad.setSize(420,700);
 				habilidad.setVisible(true);
 				habilidad.getContentPane().add(new PanelAtributos(v));
 				

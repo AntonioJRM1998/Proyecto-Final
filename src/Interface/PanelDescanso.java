@@ -59,9 +59,9 @@ public class PanelDescanso extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				System.out.println(v.getPersonaje().getVida());
-				for(int c=0;c<slider.getValue()*10;c++) {
+				for(int c=0;c<slider.getValue();c++) {
 					if(v.getPersonaje().getVida()<v.getPersonaje().getResistencia()*20) {
-					v.getPersonaje().setVida(v.getPersonaje().getVida()+1);
+					v.getPersonaje().setVida(v.getPersonaje().getVida()+v.getAtributos().getMedicina()*2);
 					v.getMapa().setSueño(v.getMapa().getSueño()-(slider.getValue()-5));
 					System.out.println(v.getPersonaje().getVida());
 					
