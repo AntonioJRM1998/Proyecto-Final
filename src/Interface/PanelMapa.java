@@ -91,9 +91,12 @@ public class PanelMapa extends JPanel {
 				System.out.println(v.getPersonaje().getNombre());
 				try {
 					conn=DriverManager.getConnection(BaseDatos.bdNombre,BaseDatos.bdUsuario,BaseDatos.bdContraseña);
+					PreparedStatement loginStatement1=null;
 					Statement registerpokemon=conn.createStatement();
 					PreparedStatement statement = conn.prepareStatement("TRUNCATE " + "personaje");
-						  statement.executeUpdate();
+					PreparedStatement statement1=conn.prepareStatement(" TRUNCATE " + " mazmorras ");
+					statement.executeUpdate();
+					statement1.executeUpdate();
 					
 					PreparedStatement loginStatement=conn.prepareStatement(
 					        "insert into personaje (Nombre,genero,vida,fuerza,inteligencia,carisma,resistencia,nivel,experiencia,daño,puntoshabilidades"
@@ -102,12 +105,19 @@ public class PanelMapa extends JPanel {
 					                        "','"+v.getPersonaje().getCarisma()+"','"+v.getPersonaje().getResistencia()+"','"+v.getPersonaje().getNivel()+
 					                        "','"+v.getPersonaje().getExperiencia()+"','"+v.getPersonaje().getDaño()+"',"+v.getPersonaje().getPuntoshabilidades()+")");
 				for(int c=0;c<mazmorra.length;c++) {
-					System.out.println(mazmorra[c].isCompletada());
-					PreparedStatement loginStatement1=conn.prepareStatement(
-					        "insert into personaje (completada"
-					                        + ") values('"+mazmorra[c].isCompletada()+")");
-				}
+					if(mazmorra[c].isCompletada()==false) {
+						System.out.println(mazmorra[c].isCompletada()+""+mazmorra[c].getNombre());
+						loginStatement1=conn.prepareStatement(
+						      "insert into mazmorras (completada,nombre"
+						                        + ") values('"+0+"','"+mazmorra[c].getNombre()+"')");
+						loginStatement1.executeUpdate();
+					}else {
+						loginStatement1=conn.prepareStatement(
+					        "insert into mazmorras (completada,nombre"
+					                        + ") values('"+1+"','"+mazmorra[c].getNombre()+"')");
+					}
 					
+				}
 					loginStatement.executeUpdate();
 					JOptionPane.showConfirmDialog(getComponentPopupMenu(), "Se han guardado los datos");
 				} catch (SQLException e1) {
@@ -223,11 +233,7 @@ public class PanelMapa extends JPanel {
 		this.enemigo=enemigos;
 	}
 	public void setMazmorra(Mazmorras[]maz) {
-		Mazmorras mazmorracasa=new Mazmorras("Casa del Anciano Harris",false,"Esta casa lleva años abandonada pero se dice que algunos saqueadores la usan como refugio",0);
-		maz[0]=mazmorracasa;
-		Mazmorras ciudad=new Mazmorras("Ciudadela",false,"La ciudadela de la hermandad del acero es el sitio ideal para comprar sumisnistros medicos,armas,municion y curarse, tambien podras vender tus cosas al mercader local",1);
-		maz[1]=ciudad;
-		this.mazmorra=maz;
+		this.mazmorra=ventana.getMazmorra();
 	}
 	public Enemigos[] getEnemigos(){
 		return enemigo;

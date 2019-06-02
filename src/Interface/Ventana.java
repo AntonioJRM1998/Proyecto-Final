@@ -21,7 +21,7 @@ public class Ventana extends JFrame  {
 	private PanelDescanso descanso;
 	public Ventana() {
 		super();
-		mazmorra=new Mazmorras[2];
+		setMazmorra(new Mazmorras[2]);
 		enemigos=new Enemigos();
 		atributos=new Habilidades();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

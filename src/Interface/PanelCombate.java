@@ -267,9 +267,11 @@ public class PanelCombate extends JPanel {
 			textPane.replaceSelection("El enemigo se ha defendido y ha perdido "+(v.getPersonaje().getDaño()-50+x.getDaño())+" de vida"+"\n");
 		}
 		if(enemigo1[id].getVida()<=0) {
+			System.out.println("entra aqui"+maz[id].getNombre());
 			textPane.replaceSelection("Has ganado "+enemigo1[id].getExperiencia()+" de experiencia");
 			v.getPersonaje().setExperiencia(v.getPersonaje().getExperiencia()+enemigo1[id].getExperiencia());
 			maz[id].setCompletada(true);
+			System.out.println(maz[id].isCompletada());
 			}
 		}
 	}
