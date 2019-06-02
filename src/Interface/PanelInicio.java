@@ -4,6 +4,8 @@ import javax.swing.JPanel;
 
 
 import Clases.BaseDatos;
+import Exepciones.FalloCragarPartida;
+
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -32,7 +34,15 @@ public class PanelInicio extends JPanel {
 		Cargar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				base();
+				try {
+					base();
+				} catch (FalloCragarPartida e) {
+					try {
+						throw new FalloCragarPartida("No se ha podido cargar la base de datos");
+					} catch (FalloCragarPartida e1) {
+						System.err.println(e.getMessage());
+					}
+				}
 			}
 		});
 		Cargar.setFont(new Font("Gill Sans Ultra Bold", Font.BOLD, 25));
@@ -56,7 +66,7 @@ public class PanelInicio extends JPanel {
 		add(lblNewLabel);
 		setVisible(true);
 	}
-	public void base() {
+	public void base() throws FalloCragarPartida {
 		try {
             bd=DriverManager.getConnection(BaseDatos.bdNombre,BaseDatos.bdUsuario,BaseDatos.bdContraseña);
             executeStatement=bd.createStatement();
@@ -80,10 +90,10 @@ public class PanelInicio extends JPanel {
             }
             mipokemo.close();
             
-        }catch(SQLException e) {
-            JOptionPane.showMessageDialog(ventana, "No se ha podido iniciar la conexion con la base de datos");
-            e.printStackTrace();
-        }
+        }catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public void cargarPersonaje(ResultSet mipokemo){
         try {
