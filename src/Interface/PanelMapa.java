@@ -106,7 +106,7 @@ public class PanelMapa extends JPanel {
 					                        "','"+v.getPersonaje().getCarisma()+"','"+v.getPersonaje().getResistencia()+"','"+v.getPersonaje().getNivel()+
 					                        "','"+v.getPersonaje().getExperiencia()+"','"+v.getPersonaje().getDaño()+"',"+v.getPersonaje().getPuntoshabilidades()+")");
 					guardarMazmorra();
-					v.getAtributospane().guardarAtributos(v);
+					guardarAtributos(v);
 					loginStatement.executeUpdate();
 					JOptionPane.showMessageDialog(getComponentPopupMenu(), "Se han guardado los datos");
 				} catch (SQLException e1) {
@@ -284,5 +284,21 @@ public class PanelMapa extends JPanel {
 		habilidades.setConversacion(ventana.getPersonaje().getCarisma()*3);
 		habilidades.setMedicina(ventana.getPersonaje().getInteligencia()*2);
 		habilidades.setReparacion(ventana.getPersonaje().getInteligencia()*2);
+	}
+	public void guardarAtributos(Ventana v) {
+		try {
+			conn=DriverManager.getConnection(BaseDatos.bdNombre,BaseDatos.bdUsuario,BaseDatos.bdContraseña);
+			PreparedStatement statement = conn.prepareStatement("TRUNCATE " + "habilidades");
+			statement.executeUpdate();
+			PreparedStatement loginStatement=conn.prepareStatement(
+			        "insert into habilidades (puntoshabilidades,armas,conversacion,ciencia,medicima,reparacion"
+			                        + ") values('"+v.getAtributos().getPuntosHabilidades()+"','"+v.getAtributos().getArmas()+"','"+v.getAtributos().getConversacion()+
+			                        "','"+v.getAtributos().getCiencia()+"','"+v.getAtributos().getMedicina()+
+			                        "',"+v.getAtributos().getReparacion()+")");
+			loginStatement.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

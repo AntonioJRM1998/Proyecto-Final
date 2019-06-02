@@ -300,21 +300,6 @@ public class PanelAtributos extends JPanel {
 		
 		
 	}
-	public void guardarAtributos(Ventana v) {
-		try {
-			conn=DriverManager.getConnection(BaseDatos.bdNombre,BaseDatos.bdUsuario,BaseDatos.bdContraseña);
-			PreparedStatement statement = conn.prepareStatement("TRUNCATE " + "habilidades");
-			statement.executeUpdate();
-			PreparedStatement loginStatement=conn.prepareStatement(
-			        "insert into personaje (puntoshabilidades,armas,conversacion,ciencia,medicina,reparacion,nivel"
-			                        + ") values('"+v.getAtributos().getPuntosHabilidades()+"',"+v.getAtributos().getArmas()+",'"+v.getAtributos().getConversacion()+
-			                        "','"+v.getAtributos().getCiencia()+"','"+v.getAtributos().getMedicina()+
-			                        "','"+v.getAtributos().getReparacion()+")");
-			loginStatement.executeUpdate();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+
 	}
 

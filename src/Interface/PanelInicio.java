@@ -70,9 +70,15 @@ public class PanelInicio extends JPanel {
             	if(dungeon.next()) {
             	ventana.cargaPantallaMapaInicio();
             	ventana.getMapa().cargarMazmorras(dungeon);
+            	ResultSet atributosbase=po.executeQuery("select * from habilidades");
+            	if(atributosbase.next()) {
+            		cargarAtributos(atributosbase);
+            		atributosbase.close();
+            	}
+            	dungeon.close();
             	}
             }
-            
+            mipokemo.close();
             
         }catch(SQLException e) {
             JOptionPane.showMessageDialog(ventana, "No se ha podido iniciar la conexion con la base de datos");
@@ -91,15 +97,24 @@ public class PanelInicio extends JPanel {
 	        ventana.getPersonaje().setNivel(mipokemo.getInt("nivel"));
 	        ventana.getPersonaje().setPuntoshabilidades(mipokemo.getInt("puntoshabilidades"));
 	        ventana.getPersonaje().setResistencia(mipokemo.getInt("resistencia"));
-	        ventana.getAtributos().setArmas(ventana.getPersonaje().getFuerza()*2);
-	        ventana.getAtributos().setConversacion(ventana.getPersonaje().getCarisma()*2);
-	        ventana.getAtributos().setCiencia(ventana.getPersonaje().getInteligencia()*2);
-	        ventana.getAtributos().setMedicina(ventana.getPersonaje().getInteligencia()*2);
-	        ventana.getAtributos().setReparacion(ventana.getPersonaje().getInteligencia()*2);
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
 		}	
+	}
+	public void cargarAtributos(ResultSet mipokemo) {
+        try {
+        	ventana.getAtributos().setPuntosHabilidades(mipokemo.getInt("puntoshabilidades"));
+			ventana.getAtributos().setArmas(mipokemo.getInt("armas"));
+	        ventana.getAtributos().setConversacion(mipokemo.getInt("conversacion"));
+	        ventana.getAtributos().setCiencia(mipokemo.getInt("ciencia"));
+	        ventana.getAtributos().setMedicina(mipokemo.getInt("medicima"));
+	        ventana.getAtributos().setReparacion(mipokemo.getInt("reparacion"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 }
