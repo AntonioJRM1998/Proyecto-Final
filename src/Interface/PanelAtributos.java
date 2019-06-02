@@ -9,13 +9,22 @@ import javax.swing.JTextPane;
 import javax.swing.JButton;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.MatteBorder;
+
+import Clases.BaseDatos;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class PanelAtributos extends JPanel {
 	private Ventana ventana;
+	private Connection conn;
 	public PanelAtributos(Ventana v) {
 		super();
+		this.ventana=v;
 		this.ventana=v;
 		setSize(400,700);
 		setLayout(null);
@@ -218,7 +227,7 @@ public class PanelAtributos extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(v.getAtributos().getPuntosHabilidades()>0) {
-					v.getAtributos().setReparacion(v.getAtributos().getCiencia()+1);
+					v.getAtributos().setReparacion(v.getAtributos().getReparacion()+1);
 					v.getAtributos().setPuntosHabilidades(v.getAtributos().getPuntosHabilidades()-1);
 					lblpuntreparacion.setText(Integer.toString(v.getAtributos().getReparacion()));
 					puntosHabilidad.setText(Integer.toString(v.getAtributos().getPuntosHabilidades()));
@@ -229,7 +238,7 @@ public class PanelAtributos extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(v.getAtributos().getReparacion() >v.getPersonaje().getInteligencia()*2) {
-					v.getAtributos().setCiencia(v.getAtributos().getReparacion()-1);
+					v.getAtributos().setReparacion(v.getAtributos().getReparacion()-1);
 					v.getAtributos().setPuntosHabilidades(v.getAtributos().getPuntosHabilidades()+1);
 					lblpuntreparacion.setText(Integer.toString(v.getAtributos().getReparacion()));
 					puntosHabilidad.setText(Integer.toString(v.getAtributos().getPuntosHabilidades()));
@@ -240,7 +249,7 @@ public class PanelAtributos extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(v.getAtributos().getPuntosHabilidades()>0) {
-					v.getAtributos().setReparacion(v.getAtributos().getMedicina()+1);
+					v.getAtributos().setMedicina(v.getAtributos().getMedicina()+1);
 					v.getAtributos().setPuntosHabilidades(v.getAtributos().getPuntosHabilidades()-1);
 					lblpuntmedicina.setText(Integer.toString(v.getAtributos().getMedicina()));
 					puntosHabilidad.setText(Integer.toString(v.getAtributos().getPuntosHabilidades()));
@@ -251,7 +260,7 @@ public class PanelAtributos extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(v.getAtributos().getMedicina() >v.getPersonaje().getInteligencia()*2) {
-					v.getAtributos().setCiencia(v.getAtributos().getMedicina()-1);
+					v.getAtributos().setMedicina(v.getAtributos().getMedicina()-1);
 					v.getAtributos().setPuntosHabilidades(v.getAtributos().getPuntosHabilidades()+1);
 					lblpuntmedicina.setText(Integer.toString(v.getAtributos().getMedicina()));
 					puntosHabilidad.setText(Integer.toString(v.getAtributos().getPuntosHabilidades()));
@@ -290,6 +299,22 @@ public class PanelAtributos extends JPanel {
 		});
 		
 		
+	}
+	public void guardarAtributos(Ventana v) {
+		try {
+			conn=DriverManager.getConnection(BaseDatos.bdNombre,BaseDatos.bdUsuario,BaseDatos.bdContraseña);
+			PreparedStatement statement = conn.prepareStatement("TRUNCATE " + "habilidades");
+			statement.executeUpdate();
+			PreparedStatement loginStatement=conn.prepareStatement(
+			        "insert into personaje (puntoshabilidades,armas,conversacion,ciencia,medicina,reparacion,nivel"
+			                        + ") values('"+v.getAtributos().getPuntosHabilidades()+"',"+v.getAtributos().getArmas()+",'"+v.getAtributos().getConversacion()+
+			                        "','"+v.getAtributos().getCiencia()+"','"+v.getAtributos().getMedicina()+
+			                        "','"+v.getAtributos().getReparacion()+")");
+			loginStatement.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	}
 

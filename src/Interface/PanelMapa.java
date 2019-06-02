@@ -10,8 +10,9 @@ import javax.swing.JProgressBar;
 
 import Clases.BaseDatos;
 import Clases.Enemigos;
+import Clases.Habilidades;
 import Clases.Mazmorras;
-
+import Clases.Personaje;
 
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
@@ -50,8 +51,9 @@ public class PanelMapa extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				combates=false;
-				setIdmazmorras(0);
+				setIdmazmorras(1);
 				ventana.cargaPantallaInformacion();
+				ventana.getInformacion().pantallaInformacion(v);
 			}
 		});
 		
@@ -94,7 +96,6 @@ public class PanelMapa extends JPanel {
 				System.out.println(v.getPersonaje().getNombre());
 				try {
 					conn=DriverManager.getConnection(BaseDatos.bdNombre,BaseDatos.bdUsuario,BaseDatos.bdContraseña);
-					Statement registerpokemon=conn.createStatement();
 					PreparedStatement statement = conn.prepareStatement("TRUNCATE " + "personaje");
 					statement.executeUpdate();
 					
@@ -104,9 +105,10 @@ public class PanelMapa extends JPanel {
 					                        "','"+v.getPersonaje().getFuerza()+"','"+v.getPersonaje().getInteligencia()+
 					                        "','"+v.getPersonaje().getCarisma()+"','"+v.getPersonaje().getResistencia()+"','"+v.getPersonaje().getNivel()+
 					                        "','"+v.getPersonaje().getExperiencia()+"','"+v.getPersonaje().getDaño()+"',"+v.getPersonaje().getPuntoshabilidades()+")");
-					v.getCombate().guardarMazmorra(getMazmorra());
+					guardarMazmorra();
+					v.getAtributospane().guardarAtributos(v);
 					loginStatement.executeUpdate();
-					JOptionPane.showConfirmDialog(getComponentPopupMenu(), "Se han guardado los datos");
+					JOptionPane.showMessageDialog(getComponentPopupMenu(), "Se han guardado los datos");
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -140,6 +142,7 @@ public class PanelMapa extends JPanel {
 				setIdmazmorras(0);
 				combates=false;
 				ventana.cargaPantallaInformacion();	
+				ventana.getInformacion().pantallaInformacion(v);
 				v.getInformacion().setInformacion(mazmorra);
 			}
 		});
@@ -247,5 +250,39 @@ public class PanelMapa extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	public void guardarMazmorra() {
+		try {
+			conn=DriverManager.getConnection(BaseDatos.bdNombre,BaseDatos.bdUsuario,BaseDatos.bdContraseña);
+			PreparedStatement loginStatement1=null;
+			PreparedStatement statement1=conn.prepareStatement(" TRUNCATE " + " mazmorras ");
+			statement1.executeUpdate();
+			for(int c=0;c<mazmorra.length;c++) {
+				if(mazmorra[c].isCompletada()==false) {
+					loginStatement1=conn.prepareStatement(
+					      "insert into mazmorras (completada,nombre"
+					                        + ") values('"+0+"','"+mazmorra[c].getNombre()+"')");
+					loginStatement1.executeUpdate();
+				}else {
+					loginStatement1=conn.prepareStatement(
+				        "insert into mazmorras (completada,nombre"
+				                        + ") values('"+1+"','"+mazmorra[c].getNombre()+"')");
+					loginStatement1.executeUpdate();
+				}
+				
+			}
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+}
+	public void asignarHabilidades(Habilidades habilidades) {
+		habilidades.setArmas(ventana.getPersonaje().getFuerza()*2);
+		habilidades.setCiencia(ventana.getPersonaje().getInteligencia()*2);
+		habilidades.setConversacion(ventana.getPersonaje().getCarisma()*3);
+		habilidades.setMedicina(ventana.getPersonaje().getInteligencia()*2);
+		habilidades.setReparacion(ventana.getPersonaje().getInteligencia()*2);
 	}
 }

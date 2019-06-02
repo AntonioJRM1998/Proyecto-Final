@@ -62,7 +62,7 @@ public class PanelDescanso extends JPanel {
 				for(int c=0;c<slider.getValue();c++) {
 					if(v.getPersonaje().getVida()<v.getPersonaje().getResistencia()*20) {
 					v.getPersonaje().setVida(v.getPersonaje().getVida()+v.getAtributos().getMedicina()*2);
-					v.getMapa().setSueño(v.getMapa().getSueño()-(slider.getValue()-5));
+					v.getMapa().setSueño(v.getMapa().getSueño()-(slider.getValue()-10));
 					System.out.println(v.getPersonaje().getVida());
 					
 				}else{

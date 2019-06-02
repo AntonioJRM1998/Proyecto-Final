@@ -15,6 +15,7 @@ public class Ventana extends JFrame  {
 	private Objetos[][]mochila;
 	private Mazmorras[]mazmorra;
 	private PanelInformacion informacion;
+	private PanelAtributos atributospane;
 	private PanelCombate combate;
 	private Enemigos enemigos;
 	private Habilidades atributos;
@@ -155,6 +156,13 @@ public class Ventana extends JFrame  {
 	public void setAtributos(Habilidades atributos) {
 		this.atributos = atributos;
 	}
+	public PanelAtributos getAtributospane() {
+		return atributospane;
+	}
+	public void setAtributospane(PanelAtributos atributospane) {
+		this.atributospane = atributospane;
+	}
+	
 	
 	
 	

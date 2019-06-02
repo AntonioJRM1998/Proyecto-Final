@@ -2,6 +2,7 @@ package Interface;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import java.awt.Color;
@@ -369,10 +370,10 @@ public class PanelHabilidades extends JPanel {
 			public void mouseClicked(MouseEvent arg0) {
 				if(ventana.getPersonaje().getPuntoshabilidades()==0&&camponombre.getText().length()>0&&ventana.getPersonaje().getGenero()!=null) {
 				ventana.getPersonaje().setNombre(camponombre.getText());
-				asignarHabilidades(habilidad,ventana.getPersonaje());
 				ventana.cargaPantallaMapa();
+				v.getMapa().asignarHabilidades(v.getAtributos());
 				}else {
-					ventana.cargaPantallaMapa();
+					JOptionPane.showMessageDialog(getParent(), "Faltan campos por rellenar o no has usado todos tus puntos");
 				}
 			}
 		});
@@ -412,11 +413,5 @@ public class PanelHabilidades extends JPanel {
 				+ "\nReparacion:"+habilidades.getReparacion());
 		
 	}
-	public void asignarHabilidades(Habilidades habilidades,Personaje personaje) {
-		habilidades.setArmas(ventana.getPersonaje().getFuerza()*2);
-		habilidades.setCiencia(ventana.getPersonaje().getInteligencia()*2);
-		habilidades.setConversacion(ventana.getPersonaje().getCarisma()*3);
-		habilidades.setMedicina(ventana.getPersonaje().getInteligencia()*2);
-		habilidades.setReparacion(ventana.getPersonaje().getInteligencia()*2);
-	}
+
 }

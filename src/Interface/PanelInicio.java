@@ -97,7 +97,7 @@ public class PanelInicio extends JPanel {
 	        ventana.getAtributos().setMedicina(ventana.getPersonaje().getInteligencia()*2);
 	        ventana.getAtributos().setReparacion(ventana.getPersonaje().getInteligencia()*2);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}	
 	}
